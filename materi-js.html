@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modul 3: Logika JavaScript - FrontEnd Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --js-color: #f7df1e;
+        --js-dark: #323330;
+        --bg: #fdfdfd;
+        --sidebar-width: 260px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.8;
+        background: var(--bg);
+        color: #2c3e50;
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- STYLE SIDEBAR (DESKTOP) --- */
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: white;
+        border-right: 1px solid #eee;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding: 30px 15px;
+        overflow-y: auto;
+        z-index: 100;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .sidebar-brand {
+        font-weight: bold;
+        color: #2563eb;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        display: block;
+        text-decoration: none;
+      }
+
+      .sidebar h4 {
+        margin-bottom: 15px;
+        color: #64748b;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar ul li {
+        margin-bottom: 8px;
+      }
+
+      .sidebar ul li a {
+        display: block;
+        padding: 12px 15px;
+        color: #475569;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+
+      .sidebar ul li a:hover {
+        background: #fffbe6;
+        color: #8a7b00;
+      }
+
+      /* --- ANIMASI SCROLL (REVEAL) --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- KONTEN UTAMA --- */
+      .container {
+        max-width: 1000px;
+        margin-left: var(--sidebar-width);
+        flex: 1;
+        padding: 50px 60px;
+        min-width: 0;
+      }
+
+      .materi-card {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 40px;
+        border: 1px solid #eee;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        scroll-margin-top: 100px;
+      }
+
+      h2 {
+        color: #8a7b00;
+        border-bottom: 3px solid var(--js-color);
+        display: inline-block;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        margin: 25px 0 10px;
+        color: #1e293b;
+      }
+
+      .code-header {
+        background: var(--js-dark);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 8px 8px 0 0;
+        font-size: 0.85rem;
+        margin-top: 15px;
+      }
+
+      .code-block {
+        background: #1e1e1e;
+        color: #dcdcdc;
+        padding: 20px;
+        border-radius: 0 0 8px 8px;
+        font-family: "Fira Code", monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+        margin-bottom: 20px;
+      }
+
+      .keyword { color: #569cd6; }
+      .variable { color: #9cdcfe; }
+      .string { color: #ce9178; }
+      .comment { color: #6a9955; }
+      
+      .btn-logic {
+        background: var(--js-color);
+        color: var(--js-dark);
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      .btn-logic:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(247, 223, 30, 0.4);
+      }
+
+      /* Tombol Menu Mobile asli milikmu */
+      .mobile-trigger {
+        display: none;
+        background: var(--js-dark);
+        color: var(--js-color);
+        border: 1px solid var(--js-color);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      }
+
+      /* ===================================================
+         MEDIA QUERIES (PERBAIKAN RESPONSIVITAS TOTAL)
+         =================================================== */
+      @media (max-width: 992px) {
+        body {
+          flex-direction: column;
+        }
+
+        /* Perbaikan Gambar 1: Tombol menu mengambang rapi, sidebar ditarik keluar layar */
+        .mobile-trigger {
+          display: block !important;
+          position: fixed !important;
+          top: 15px !important;
+          left: 15px !important;
+          z-index: 2000 !important;
+        }
+
+        .sidebar {
+          position: fixed !important;
+          left: 0 !important;
+          top: 0 !important;
+          transform: translateX(-100%); /* Tersembunyi aman di kiri */
+          width: 280px !important;
+          height: 100vh !important;
+          z-index: 1900 !important;
+          padding-top: 80px !important; /* Agar link daftar isi tidak tertutup tombol menu */
+          box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+          transition: transform 0.3s ease-in-out;
+        }
+
+        /* Muncul bergeser ke kanan saat aktif */
+        .sidebar.active {
+          transform: translateX(0) !important;
+        }
+
+        /* Konten utama melebar penuh dan diberi jarak atas dari tombol menu */
+        .container {
+          margin-left: 0 !important;
+          padding: 80px 15px 30px !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: hidden;
+        }
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2rem !important;
+        }
+        
+        .materi-card {
+          padding: 25px 15px !important;
+        }
+
+        /* Perbaikan Gambar 2: Memaksa flexbox alur kerja DOM yang sebaris berganti menumpuk ke bawah */
+        .materi-card div[style*="display: flex"],
+        div[style*="display: flex"] {
+          flex-direction: column !important;
+          gap: 15px !important;
+        }
+
+        /* Memastikan kotak Input & Proses melebar penuh di HP */
+        div[style*="display: flex"] > div {
+          width: 100% !important;
+          max-width: 100% !important;
+          display: block !important;
+        }
+
+        /* Mengunci potongan kodingan panjang agar otomatis patah baris dan tidak bocor ke kanan */
+        .code-block {
+          padding: 15px !important;
+          font-size: 0.85rem !important;
+          white-space: pre-wrap !important;
+          word-break: break-word !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <button class="mobile-trigger" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i> Menu Modul
+    </button>
+
+    <nav class="sidebar" id="sidebarMenu">
+      <a href="index.html#materi" class="sidebar-brand">
+        <i class="fas fa-chevron-left"></i> Beranda
+      </a>
+      <h4>Daftar Isi Bab</h4>
+      <ul>
+        <li><a href="#bab1" onclick="toggleSidebar()"><i class="fas fa-box"></i> Bab 1: Variabel</a></li>
+        <li><a href="#bab2" onclick="toggleSidebar()"><i class="fas fa-database"></i> Bab 2: Tipe Data</a></li>
+        <li><a href="#bab3" onclick="toggleSidebar()"><i class="fas fa-code-branch"></i> Bab 3: Logika IF</a></li>
+        <li><a href="#bab4" onclick="toggleSidebar()"><i class="fas fa-sitemap"></i> Bab 4: Manipulasi DOM</a></li>
+        <li><a href="#bab5" onclick="toggleSidebar()"><i class="fas fa-receipt"></i> Bab 5: Function</a></li>
+        <li><a href="#bab6" onclick="toggleSidebar()"><i class="fas fa-bolt"></i> Bab 6: Event Listener</a></li>
+        <li><a href="#bab7" onclick="toggleSidebar()"><i class="fas fa-lightbulb"></i> Bab 7: Saklar Lampu</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <header style="text-align: center; margin-bottom: 60px">
+        <a href="index.html#materi" style="text-decoration: none; color: #2563eb; font-weight: bold"> 
+          <h1>🚀 Modul 3: JavaScript</h1>
+        </a>
+        <p>Memberikan Logika dan Interaksi pada Halaman Web.</p>
+      </header>
+
+      <article class="materi-card reveal" id="bab1">
+        <h2>BAB 1: Variabel (Tempat Penyimpanan)</h2>
+        <p>Variabel adalah wadah untuk menyimpan data. Bayangkan variabel sebagai sebuah <b>kotak berlabel</b> yang berisi nilai tertentu.</p>
+
+        <div class="code-header">Contoh Variabel <span>JS</span></div>
+        <div class="code-block">
+          <span class="keyword">let</span> <span class="variable">namaSiswa</span> = <span class="string">"Budi"</span>; <span class="comment">// Menyimpan teks (String)</span><br />
+          <span class="keyword">const</span> <span class="variable">nilaiKoding</span> = <span class="variable">95</span>; <span class="comment">// Nilai tetap (Angka/Number)</span><br />
+          <span class="variable">alert</span>(<span class="variable">namaSiswa</span>); <span class="comment">// Memunculkan kotak pesan</span>
+        </div>
+
+        <button onclick="expandJS('var')" class="btn-logic">Apa bedanya let dan const?</button>
+        <div id="detail-var"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab2">
+        <h2>BAB 2: Tipe Data (Jenis-Jenis Nilai)</h2>
+        <p>JavaScript membagi data menjadi beberapa jenis utama. Mengetahui tipe data membantu kita menghindari kesalahan logika saat menghitung atau mengolah teks.</p>
+
+        <div class="code-header">Contoh Penulisan Tipe Data <span>JS</span></div>
+        <div class="code-block">
+          <span class="comment">// 1. String (Teks) - Harus dibungkus tanda kutip</span><br />
+          <span class="keyword">let</span> <span class="variable">kota</span> = <span class="string">"Jakarta"</span>;<br /><br />
+          <span class="comment">// 2. Number (Angka) - Tanpa tanda kutip</span><br />
+          <span class="keyword">let</span> <span class="variable">umur</span> = <span class="val">17</span>;<br /><br />
+          <span class="comment">// 3. Boolean (Logika) - Hanya true atau false</span><br />
+          <span class="keyword">let</span> <span class="variable">isLogin</span> = <span class="keyword">true</span>;
+        </div>
+
+        <button onclick="expandJS('datatype')" class="btn-logic">Lihat Tipe Data Kelompok (Array & Object)</button>
+        <div id="detail-datatype"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab3">
+        <h2>BAB 3: Pengkondisian (Logika IF)</h2>
+        <p>Inilah inti dari kecerdasan komputer. Program bisa mengambil keputusan berdasarkan situasi tertentu.</p>
+
+        <div class="code-header">Logika Kelulusan <span>JS</span></div>
+        <div class="code-block">
+          <span class="keyword">if</span> (<span class="variable">nilai</span> > <span class="variable">75</span>) {<br />
+          &nbsp;&nbsp;<span class="variable">console</span>.<span class="variable">log</span>(<span class="string">"Selamat, kamu lulus!"</span>);<br />
+          } <span class="keyword">else</span> {<br />
+          &nbsp;&nbsp;<span class="variable">console</span>.<span class="variable">log</span>(<span class="string">"Semangat, coba lagi ya."</span>);<br />
+          }
+        </div>
+        <button onclick="expandJS('if')" class="btn-logic">Analogi Lampu Lalu Lintas</button>
+        <div id="detail-if"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab4">
+        <h2>BAB 4: Manipulasi DOM (Mengubah HTML)</h2>
+        <p>JavaScript bisa mengubah isi HTML secara langsung tanpa harus refresh halaman. Inilah yang membuat web terasa "hidup".</p>
+        <p>DOM adalah representasi struktur HTML dalam bentuk pohon (tree). Dengan DOM, JavaScript bisa mengakses setiap elemen seperti mengakses cabang pohon.</p>
+
+        <div class="code-block">
+          <span class="comment">// Mengambil elemen lalu mengganti teksnya</span><br />
+          <span class="keyword">document</span>.<span class="variable">getElementById</span>(<span class="string">"judul"</span>).<span class="variable">innerText</span> = <span class="string">"Halo Dunia!"</span>;
+        </div>
+        
+        <button onclick="expandJS('dom')" class="btn-logic">Alur Kerja Manipulasi DOM</button>
+        <div id="detail-dom"></div>
+
+        <h3>1. Menyeleksi Elemen (Finding)</h3>
+        <div class="code-block">
+          <span class="keyword">let</span> <span class="variable">judul</span> = <span class="keyword">document</span>.<span class="variable">getElementById</span>(<span class="string">"header"</span>);<br />
+          <span class="keyword">let</span> <span class="variable">tombol</span> = <span class="keyword">document</span>.<span class="variable">querySelector</span>(<span class="string">".btn-biru"</span>);
+        </div>
+
+        <h3>2. Mengubah Isi & Properti (Changing)</h3>
+        <div class="code-block">
+          <span class="variable">judul</span>.<span class="variable">innerText</span> = <span class="string">"Selamat Datang di SMK!"</span>;<br />
+          <span class="variable">judul</span>.<span class="variable">innerHTML</span> = <span class="string">"&lt;i&gt;Teks Miring&lt;/i&gt;"</span>;<br />
+          <span class="variable">gambar</span>.<span class="variable">src</span> = <span class="string">"foto-baru.jpg"</span>;
+        </div>
+
+        <h3>3. Mengubah Gaya (Styling)</h3>
+        <div class="code-block">
+          <span class="variable">judul</span>.<span class="variable">style</span>.<span class="variable">color</span> = <span class="string">"red"</span>;<br />
+          <span class="variable">judul</span>.<span class="variable">style</span>.<span class="variable">backgroundColor</span> = <span class="string">"yellow"</span>;
+        </div>
+
+        <button onclick="expandJS('dom_action')" class="btn-logic">Simulasi: Bagaimana JS Mengubah HTML?</button>
+        <div id="detail-dom-action"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab5">
+        <h2>BAB 5: Function (Fungsi)</h2>
+        <p>Function adalah sekumpulan instruksi yang dibungkus jadi satu. Bayangkan seperti <b>Resep Masakan</b>.</p>
+
+        <div class="code-header">Cara Membuat Fungsi <span>JS</span></div>
+        <div class="code-block">
+          <span class="keyword">function</span> <span class="variable">sapaSiswa</span>(<span class="variable">nama</span>) {<br />
+          &nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Halo "</span> + <span class="variable">nama</span> + <span class="string">", selamat belajar!"</span>;<br />
+          }<br /><br />
+          <span class="variable">console</span>.<span class="variable">log</span>(<span class="variable">sapaSiswa</span>(<span class="string">"Andi"</span>));
+        </div>
+        <button onclick="expandJS('func')" class="btn-logic">Analogi Mesin Jus</button>
+        <div id="detail-func"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab6">
+        <h2>BAB 6: Event Listener (Sensor Interaksi)</h2>
+        <p>JavaScript bertugas sebagai <b>Sirine</b> yang menunggu perintah dari Bel (Event).</p>
+
+        <ul style="list-style: none; padding-left: 0">
+          <li>🎯 <b>Target:</b> Tombol, Gambar, Input.</li>
+          <li>⚡ <b>Event:</b> Klik, Ketik, Geser.</li>
+          <li>🎬 <b>Action:</b> Munculkan pesan, ubah warna.</li>
+        </ul>
+
+        <div class="code-block">
+          <span class="variable">elemen</span>.<span class="variable">addEventListener</span>(<span class="string">"click"</span>, <span class="keyword">function</span>() { <br />
+          &nbsp;&nbsp;<span class="comment">// Jalankan kode...</span><br />
+          });
+        </div>
+
+        <button onclick="expandJS('event_easy')" class="btn-logic">Coba Simulasi "Sensor" Klik</button>
+        <div id="detail-event-easy"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab7" style="border: 2px dashed #f7df1e">
+        <h2>BAB 7: Penerapan Nyata (Saklar Lampu)</h2>
+        <p>Gabungan Variabel, Event Listener, dan Manipulasi DOM.</p>
+
+        <div class="code-header">Contoh Kode Lengkap <span>JS</span></div>
+        <div class="code-block">
+          <span class="keyword">let</span> <span class="variable">lampuMenyala</span> = <span class="keyword">false</span>;<br />
+          <span class="keyword">const</span> <span class="variable">tombol</span> = <span class="keyword">document</span>.<span class="variable">querySelector</span>(<span class="string">"#saklar"</span>);<br />
+          <span class="keyword">const</span> <span class="variable">lampu</span> = <span class="keyword">document</span>.<span class="variable">querySelector</span>(<span class="string">"#bohlam"</span>);<br /><br />
+          <span class="variable">tombol</span>.<span class="variable">addEventListener</span>(<span class="string">"click"</span>, <span class="keyword">function</span>() {<br />
+          &nbsp;&nbsp;<span class="keyword">if</span> (!<span class="variable">lampuMenyala</span>) {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">lampu</span>.<span class="variable">src</span> = <span class="string">"lampu-on.png"</span>;<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">lampuMenyala</span> = <span class="keyword">true</span>;<br />
+          &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">lampu</span>.<span class="variable">src</span> = <span class="string">"lampu-off.png"</span>;<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">lampuMenyala</span> = <span class="keyword">false</span>;<br />
+          &nbsp;&nbsp;}<br />
+          });
+        </div>
+
+        <button onclick="expandJS('demo_project')" class="btn-logic">Lihat Demo Interaktif</button>
+        <div id="detail-demo-project"></div>
+      </article>
+    </div>
+
+    <script src="script-js.js"></script>
+    <script>
+      // Logika Drawer Sidebar Mobile asli & aman
+      function toggleSidebar() {
+        const sidebar = document.getElementById('sidebarMenu');
+        if (window.innerWidth <= 992) {
+          sidebar.classList.toggle('active');
+        }
+      }
+
+      // Observer Scroll Reveal asli
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

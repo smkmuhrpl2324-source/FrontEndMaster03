@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FrontEnd Master | Belajar Web SMK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Menu Utama -->
+    <header class="navbar">
+      <div class="container nav-flex">
+        <div class="logo"><i class="fas fa-code"></i> FrontEnd<span>Master</span></div>
+        <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <nav>
+          <ul class="nav-menu" id="nav-list">
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#materi">Materi</a></li>
+            <li><a href="#permainan">Permainan</a></li>
+            <li><a href="#kuis">Kuis</a></li>
+            <li><a href="halaman-praktik.html" class="nav-cta">Praktik</a></li>
+           
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Banner -->
+    <main>
+      <section id="beranda" class="hero">
+        <div class="container hero-grid">
+          <div class="hero-text reveal-left">
+            <h1>Belajar <span>Web Design</span> Praktis</h1>
+            <p class="hero-subtitle">Platform belajar interaktif dengan kurikulum SMK yang modern dan mudah dipahami.</p>
+            <div class="btn-group">
+              <a href="#materi" class="btn btn-primary">Mulai</a>
+              <a href="halaman-praktik.html" class="btn btn-primary">Praktik</a>
+            </div>
+          </div>
+          <div class="hero-image reveal-right">
+            <img src="https://illustrations.popsy.co/white/web-design.svg" alt="Web Design Illustration" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Materi Pelajaran -->
+      <section id="materi" class="section section-materi">
+        <div class="container">
+          <h2 class="section-title">Materi Pembelajaran</h2>
+          <div class="grid-card">
+            <div class="card card-white">
+              <i class="fab fa-html5 icon-html" style="font-size: 2rem; color: #e44d26; margin-bottom: 10px"></i>
+              <h3>HTML5 (Pondasi/Dasar)</h3>
+              <p>Struktur dokumen web dan tag semantik untuk SEO.</p>
+              <br />
+              <a href="materi-html.html" class="btn btn-primary">Pelajari Materi →</a>
+            </div>
+
+            <div class="card card-white">
+              <i class="fab fa-css3-alt" style="font-size: 2rem; color: #264de4; margin-bottom: 10px"></i>
+              <h3>CSS3 (Desain/Layout)</h3>
+              <p>Teknik Flexbox dan Grid untuk tampilan responsif.</p>
+              <br />
+              <a href="materi-css.html" class="btn btn-primary">Pelajari Materi →</a>
+            </div>
+            <div class="card card-white">
+              <i class="fab fa-js-square" style="font-size: 2rem; color: #f7df1e; margin-bottom: 10px"></i>
+              <h3>JavaScript (Logika)</h3>
+              <p>Manipulasi DOM dan logika dasar pemrograman web.</p>
+              <br />
+              <a href="materi-js.html" class="btn btn-primary">Pelajari Materi →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Permainan -->
+      <section id="permainan" class="section section-permainan">
+        <div class="container">
+          <h2 class="section-title" style="color: white">Permainan Interaktif</h2>
+          <div class="grid-card">
+            <div class="card card-glass">
+              <br />
+              <i class="fab fa-html5 icon-html" style="font-size: 2rem; color: #e44d26; margin-bottom: 10px"></i><br />
+              <i class="fas fa-puzzle-piece icon-game"></i>
+              <h3>⚡CYBER-BUG SURVIVAL⚡</h3>
+              <p>HTML Code Defence Terminal</p>
+              <br />
+              <a href="./gameHTML.html" class="btn btn-primary">Start</a>
+            </div>
+            <div class="card card-glass">
+              <br />
+              <i class="fab fa-css3-alt" style="font-size: 2rem; color: #264de4; margin-bottom: 10px"></i><br />
+              <i class="fas fa-paint-brush icon-game"></i>
+              <h3>CSS Space Odyssey 🌌</h3>
+              <p>Tantangan desain visual melalui kode.</p>
+              <br /><br />
+              <a href="./gameCSS.html" class="btn btn-primary">Start</a>
+            </div>
+            <div class="card card-glass">
+              <br />
+              <i class="fab fa-js-square" style="font-size: 2rem; color: #f7df1e; margin-bottom: 10px"></i><br />
+              <i class="fas fa-gamepad icon-game"></i>
+              <h3>🎮 Master DOM Laboratory</h3>
+              <p>Selesaikan Instruksi logika JavaScript.</p>
+              <br />
+              <a href="./gameJS.html" class="btn btn-primary">Start</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kuis  -->
+      <section id="kuis" class="section section-kuis">
+        <div class="container">
+          <h2 class="section-title reveal" style="color: white">Uji Kemampuanmu</h2>
+          <div class="grid-card">
+            <div class="card card-dark">
+              <i class="fab fa-html5 icon-html" style="font-size: 2rem; color: #e44d26; margin-bottom: 10px"></i>
+              <h3>Kuis HTML</h3>
+              <p style="font-size: 0.85rem; opacity: 0.8">Uji pemahaman tag struktural.</p>
+              <div class="quiz-action-container">
+                <a href="kuis-html.html" class="btn btn-primary btn-kuis html-bg"> Mulai Kuis </a>
+              </div>
+            </div>
+
+            <div class="card card-dark">
+              <i class="fab fa-css3-alt" style="font-size: 2rem; color: #264de4; margin-bottom: 10px"></i>
+              <h3>Kuis CSS</h3>
+              <p style="font-size: 0.85rem; opacity: 0.8">Uji kemampuan styling web.</p>
+              <div class="quiz-action-container">
+                <a href="kuis-css.html" class="btn btn-primary btn-kuis css-bg"> Mulai Kuis </a>
+              </div>
+            </div>
+
+            <div class="card card-dark">
+              <i class="fab fa-js-square" style="font-size: 2rem; color: #f7df1e; margin-bottom: 10px"></i>
+              <h3>Kuis JS</h3>
+              <p style="font-size: 0.85rem; opacity: 0.8">Uji logika dan DOM.</p>
+              <div class="quiz-action-container">
+                <a href="kuis-js.html" class="btn btn-primary btn-kuis js-bg"> Mulai Kuis </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2026 FrontEndMaster • Created by Merina Kusumawati • SMKS Muhammadiyah Pangkalan Bun</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>

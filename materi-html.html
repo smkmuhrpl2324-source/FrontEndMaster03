@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modul Lengkap HTML5 - FrontEnd Master</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      /* --- PENAMBAHAN SIDEBAR TANPA MENGUBAH STYLE ASLI --- */
+      :root {
+        --sidebar-width: 280px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Wrapper utama untuk membagi sidebar dan konten */
+      .main-wrapper {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Style Sidebar Baru */
+      .sidebar {
+        width: var(--sidebar-width);
+        background: white;
+        border-right: 1px solid #e2e8f0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 30px 20px;
+        z-index: 1200; /* Dinaikkan agar selalu di atas elemen lain */
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar h4 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #94a3b8;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar ul li {
+        margin-bottom: 5px;
+      }
+
+      .sidebar ul li a {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        text-decoration: none;
+        color: #475569;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: 0.3s;
+      }
+
+      .sidebar ul li a i {
+        margin-right: 12px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .sidebar ul li a:hover {
+        background: #eff6ff;
+        color: #2563eb;
+      }
+
+      .sidebar-brand {
+        font-weight: bold;
+        color: #2563eb;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        display: block;
+        text-decoration: none;
+      }
+
+      /* Container konten disesuaikan agar memberi ruang bagi sidebar */
+      .content-area {
+        margin-left: var(--sidebar-width);
+        flex: 1;
+        width: calc(100% - var(--sidebar-width));
+        min-width: 0;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 40px;
+      }
+
+      /* Tombol Menu Mobile */
+      .mobile-trigger {
+        display: none;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1300; /* Harus lebih tinggi dari z-index sidebar */
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Style Asli Kamu Tetap Dipertahankan */
+      .materi-body {
+        padding-top: 50px;
+        background: #f8fafc;
+        color: #334155;
+      }
+      .materi-card {
+        background: white;
+        border-radius: 15px;
+        padding: 45px;
+        margin-bottom: 40px;
+        border: 1px solid #e2e8f0;
+        line-height: 1.8;
+        scroll-margin-top: 100px;
+      }
+      .code-block {
+        background: #1e293b;
+        color: #38bdf8;
+        padding: 25px;
+        border-radius: 12px;
+        font-family: "Fira Code", monospace;
+        margin: 20px 0;
+        overflow-x: auto;
+        border-left: 5px solid #2563eb;
+      }
+      .topic-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 40px;
+      }
+      .topic-box ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        list-style: none;
+        padding-top: 15px;
+      }
+      .highlight-text {
+        color: #2563eb;
+        font-weight: 700;
+        background: #dbeafe;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .nav-materi {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 60px;
+        padding-bottom: 80px;
+      }
+
+      h1.main-title {
+        font-size: 3rem;
+        color: #0f172a;
+      }
+
+      h2 {
+        border-bottom: 3px solid #2563eb;
+        display: inline-block;
+        margin-bottom: 25px;
+        padding-bottom: 5px;
+        color: #1e3a8a;
+      }
+      h3 {
+        margin-top: 30px;
+        color: #1e40af;
+      }
+      .tip-box {
+        background: #fefce8;
+        border-left: 5px solid #facc15;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 25px 0;
+        font-style: italic;
+      }
+
+      /* --- ANIMASI SCROLL --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ===================================================
+         MEDIA QUERIES (SISTEM RESPONSIVITAS BARU)
+         =================================================== */
+
+      @media (max-width: 992px) {
+        .mobile-trigger {
+          display: block;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+          padding-top: 80px; /* PERBAIKAN: Memberikan ruang di atas agar link Beranda turun kebawah tombol */
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .content-area {
+          margin-left: 0;
+          width: 100%;
+        }
+        .container {
+          padding: 0 24px;
+        }
+        header {
+          margin-top: 80px !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1.main-title {
+          font-size: 2rem;
+        }
+        .materi-card {
+          padding: 25px 20px;
+        }
+        .topic-box ul {
+          grid-template-columns: 1fr;
+        }
+        .code-block {
+          padding: 15px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="mobile-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i> Menu Modul</button>
+
+    <div class="main-wrapper">
+      <nav class="sidebar" id="sidebarMenu">
+        <a href="index.html#materi" style="text-decoration: none; color: #2563eb; font-weight: bold; display: block; margin-bottom: 30px" class="sidebar-brand"> <i class="fas fa-chevron-left"></i> Beranda </a>
+        <h4>Daftar Isi Bab</h4>
+        <ul>
+          <li>
+            <a href="#bab1" onclick="toggleSidebar()"><i class="fas fa-info-circle"></i> Bab 1: Cara Kerja</a>
+          </li>
+          <li>
+            <a href="#bab2" onclick="toggleSidebar()"><i class="fas fa-font"></i> Bab 2: Teks & Format</a>
+          </li>
+          <li>
+            <a href="#bab3" onclick="toggleSidebar()"><i class="fas fa-play-circle"></i> Bab 3: Multimedia</a>
+          </li>
+          <li>
+            <a href="#bab4" onclick="toggleSidebar()"><i class="fas fa-table"></i> Bab 4: Tabel & List</a>
+          </li>
+          <li>
+            <a href="#bab5" onclick="toggleSidebar()"><i class="fas fa-keyboard"></i> Bab 5: Form Input</a>
+          </li>
+          <li>
+            <a href="#bab6" onclick="toggleSidebar()"><i class="fas fa-sitemap"></i> Bab 6: Semantik</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="content-area">
+        <div class="container">
+          <header style="margin: 40px 0">
+            <h1 class="main-title">📚 Modul 1: HTML5 Komprehensif</h1>
+            <p style="font-size: 1.2rem; color: #64748b">Panduan Belajar dari Nol hingga Mahir untuk Siswa SMK.</p>
+          </header>
+
+          <div class="topic-box">
+            <h4><i class="fas fa-map-signs"></i> Roadmap Pembelajaran HTML:</h4>
+            <ul>
+              <li>✅ Struktur & Dokumen Dasar</li>
+              <li>✅ Anatomi Element & Atribut</li>
+              <li>✅ Hierarki Heading & Teks</li>
+              <li>✅ List (Ordered & Unordered)</li>
+              <li>✅ Gambar, Audio, & Video</li>
+              <li>✅ Hyperlink & Navigasi</li>
+              <li>✅ Tabel & Baris Data</li>
+              <li>✅ Form, Input, & Validasi</li>
+              <li>✅ Struktur Semantik HTML5</li>
+            </ul>
+          </div>
+
+          <article class="materi-card reveal" id="bab1">
+            <h2>BAB 1: Memahami Cara Kerja HTML</h2>
+            <p>HTML adalah bahasa standar untuk membuat halaman web. HTML menggunakan <span class="highlight-text">Tag</span> untuk memberi tahu browser bagaimana konten harus ditampilkan.</p>
+
+            <h3>Struktur Dasar Dokumen</h3>
+            <p>Setiap dokumen HTML dimulai dengan <code>&lt;!DOCTYPE html&gt;</code>. Ini bukan tag, melainkan instruksi kepada browser bahwa kita menggunakan standar HTML5 terbaru.</p>
+            <div class="code-block">
+              &lt;html lang="id"&gt; <br />
+              &nbsp;&nbsp;&lt;head&gt; <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="UTF-8"&gt; <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Judul Halaman&lt;/title&gt; <br />
+              &nbsp;&nbsp;&lt;/head&gt; <br />
+              &nbsp;&nbsp;&lt;body&gt; <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Halo Dunia!&lt;/h1&gt; <br />
+              &nbsp;&nbsp;&lt;/body&gt; <br />
+              &lt;/html&gt;
+            </div>
+            <div style="margin: 20px 0; padding: 15px; background: #eef2ff; border-radius: 8px; border: 1px solid #2563eb">
+              <a href="javascript:void(0)" onclick="renderPenjelasanSimpel()" style="color: #2563eb; text-decoration: none; font-weight: bold"> <i class="fas fa-lightbulb"></i> Klik di sini: Analogi Sederhana HTML (Mudah Dipahami) </a>
+            </div>
+            <div id="technical-doc-container"></div>
+          </article>
+
+          <article class="materi-card reveal" id="bab2">
+            <h2>BAB 2: Elemen Teks dan Formatting</h2>
+            <p>Teks adalah konten utama di web. Kita harus mengatur hierarki informasi agar mudah dibaca oleh manusia dan Google.</p>
+
+            <h3>Heading (Judul)</h3>
+            <p>Ada 6 tingkat heading, dari <code>&lt;h1&gt;</code> sampai <code>&lt;h6&gt;</code>. Gunakan <code>&lt;h1&gt;</code> hanya satu kali untuk judul utama halaman.</p>
+
+            <h3>Paragraf dan Penekanan</h3>
+            <p>Gunakan tag <code>&lt;p&gt;</code> untuk paragraf. Untuk menebalkan, gunakan <code>&lt;strong&gt;</code> (penting secara makna) atau <code>&lt;b&gt;</code> (penting secara visual).</p>
+            <div class="code-block">&lt;p&gt;Ini adalah &lt;strong&gt;teks penting&lt;/strong&gt; di dalam paragraf.&lt;/p&gt;</div>
+            <div style="margin: 20px 0; padding: 15px; background: #f0fdf4; border-radius: 8px; border: 1px solid #22c55e">
+              <a href="javascript:void(0)" onclick="renderPenjelasanTeks()" style="color: #166534; text-decoration: none; font-weight: bold"> <i class="fas fa-edit"></i> Klik di sini: Cara Menghias Tulisan (Formatting) </a>
+            </div>
+            <div id="formatting-doc-container"></div>
+          </article>
+
+          <article class="materi-card reveal" id="bab3">
+            <h2>BAB 3: Media (Gambar & Multimedia)</h2>
+            <p>Sebuah website akan terasa membosankan jika hanya berisi teks. Di sini kita akan belajar cara menyisipkan gambar, audio, dan video.</p>
+
+            <h3>1. Menampilkan Gambar (&lt;img&gt;)</h3>
+            <p>Tag gambar tidak memiliki penutup. Dua hal penting yang harus ada adalah <code>src</code> (lokasi file) dan <code>alt</code> (teks pengganti).</p>
+            <div class="code-block">&lt;img src="foto-siswa.jpg" alt="Foto Siswa SMK" width="300"&gt;</div>
+
+            <h3>2. Video dan Audio</h3>
+            <p>HTML5 memudahkan kita memutar musik atau film langsung di browser tanpa aplikasi tambahan.</p>
+
+            <div style="margin: 20px 0; padding: 15px; background: #fff1f2; border-radius: 8px; border: 1px solid #e11d48">
+              <a href="javascript:void(0)" onclick="renderPenjelasanMedia()" style="color: #9f1239; text-decoration: none; font-weight: bold"> <i class="fas fa-play-circle"></i> Klik di sini: Rahasia Media di Web (Sangat Mudah) </a>
+            </div>
+
+            <div id="media-doc-container"></div>
+          </article>
+
+          <article class="materi-card reveal" id="bab4">
+            <h2>BAB 4: Tabel dan List</h2>
+            <p>List digunakan untuk poin-poin, sedangkan Tabel untuk data statistik atau jadwal pelajaran.</p>
+
+            <h3>Unordered List (&lt;ul&gt;) vs Ordered List (&lt;ol&gt;)</h3>
+            <ul>
+              <li><code>&lt;ul&gt;</code>: Menggunakan simbol (bulat/kotak).</li>
+              <li><code>&lt;ol&gt;</code>: Menggunakan urutan angka atau huruf.</li>
+            </ul>
+
+            <h3>Tabel Modern</h3>
+            <div class="code-block">
+              &lt;table border="1"&gt;<br />
+              &nbsp;&nbsp;&lt;tr&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Mata Pelajaran&lt;/th&gt;<br />
+              &nbsp;&nbsp;&lt;/tr&gt;<br />
+              &nbsp;&nbsp;&lt;tr&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Pemrograman Web&lt;/td&gt;<br />
+              &nbsp;&nbsp;&lt;/tr&gt;<br />
+              &lt;/table&gt;
+            </div>
+            <div style="margin: 20px 0; padding: 15px; background: #fefce8; border-radius: 8px; border: 1px solid #eab308">
+              <a href="javascript:void(0)" onclick="renderPenjelasanTabel()" style="color: #854d0e; text-decoration: none; font-weight: bold"> <i class="fas fa-table"></i> Klik di sini: Cara Gampang Ingat Tag Tabel & List </a>
+            </div>
+
+            <div id="table-doc-container"></div>
+          </article>
+
+          <article class="materi-card reveal" id="bab5">
+            <h2>BAB 5: Form dan Input User</h2>
+            <p>Ini adalah bagian interaksi. Form memungkinkan siswa mengirim data ke server.</p>
+
+            <h3>Elemen Form Utama</h3>
+            <ul>
+              <li><code>&lt;input type="text"&gt;</code>: Untuk nama atau username.</li>
+              <li><code>&lt;input type="email"&gt;</code>: Memastikan input berformat email.</li>
+              <li><code>&lt;input type="password"&gt;</code>: Menyembunyikan karakter saat diketik.</li>
+              <li><code>&lt;textarea&gt;</code>: Untuk pesan panjang/komentar.</li>
+              <li><code>&lt;select&gt;</code>: Membuat menu pilihan (dropdown).</li>
+            </ul>
+
+            <div class="code-block">
+              &lt;form action="/simpan" method="POST"&gt;<br />
+              &nbsp;&nbsp;&lt;label&gt;Email:&lt;/label&gt;<br />
+              &nbsp;&nbsp;&lt;input type="email" name="user_email" required&gt;<br />
+              &nbsp;&nbsp;&lt;button type="submit"&gt;Daftar Sekarang&lt;/button><br />
+              &lt;/form&gt;
+            </div>
+
+            <div style="margin: 20px 0; padding: 15px; background: #f0f9ff; border-radius: 8px; border: 1px solid #0ea5e9">
+              <a href="javascript:void(0)" onclick="renderPenjelasanForm()" style="color: #0369a1; text-decoration: none; font-weight: bold"> <i class="fas fa-keyboard"></i> Klik di sini: Mengenal Macam-Macam Tombol & Input </a>
+            </div>
+
+            <div id="form-doc-container"></div>
+          </article>
+
+          <article class="materi-card reveal" id="bab6">
+            <h2>BAB 6: Struktur Semantik HTML5</h2>
+            <p>Ini adalah standar industri saat ini. Jangan gunakan <code>&lt;div&gt;</code> untuk semua hal!</p>
+
+            <p>Tag semantik membuat kode lebih rapi:</p>
+            <ul>
+              <li><span class="highlight-text">&lt;header&gt;</span>: Bagian atas (Logo & Nav).</li>
+              <li><span class="highlight-text">&lt;nav&gt;</span>: Kumpulan link navigasi.</li>
+              <li><span class="highlight-text">&lt;main&gt;</span>: Isi unik dari halaman web.</li>
+              <li><span class="highlight-text">&lt;article&gt;</span>: Konten yang bisa berdiri sendiri (seperti postingan blog).</li>
+              <li><span class="highlight-text">&lt;section&gt;</span>: Kelompok konten yang saling berkaitan.</li>
+              <li><span class="highlight-text">&lt;aside&gt;</span>: Bagian samping (iklan, link populer).</li>
+              <li><span class="highlight-text">&lt;footer&gt;</span>: Kaki web (hak cipta, kontak).</li>
+            </ul>
+
+            <h3>Mengapa Semantik Penting?</h3>
+            <p>Semantik membantu mesin pencari (SEO) dan alat pembaca layar (untuk tunanetra) memahami mana bagian navigasi, mana bagian artikel, dan mana bagian penutup.</p>
+
+            <h3>Contoh Penerapan Semantik</h3>
+            <p>Perhatikan bagaimana struktur ini lebih mudah dibaca oleh mesin dan manusia:</p>
+
+            <div class="code-block">
+              <pre>
+&lt;header&gt;
+  &lt;h1&gt;Logo Sekolah&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Beranda&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Profil SMK&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;h2&gt;Pengumuman Kelulusan&lt;/h2&gt;
+    &lt;p&gt;Selamat kepada seluruh siswa kelas XII...&lt;/p>
+  &lt;/article&gt;
+  
+  &lt;aside&gt;
+    &lt;h3&gt;Berita Populer&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Lomba Coding SMK 2026&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/aside&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;&amp;copy; 2026 Lab Komputer SMK&lt;/p>
+&lt;/footer&gt;
+</pre
+              >
+            </div>
+
+            <div class="tip-box">
+              <i class="fas fa-info-circle"></i> <strong>Tips Guru:</strong> Bayangkan tag semantik seperti label pada laci. Tanpa label, kita harus membuka semua laci untuk mencari baju. Dengan label (semantik), browser dan Google langsung
+              tahu di mana letak konten utamanya!
+            </div>
+
+            <div style="margin: 20px 0; padding: 15px; background: #faf5ff; border-radius: 8px; border: 1px solid #a855f7">
+              <a href="javascript:void(0)" onclick="renderPenjelasanSemantik()" style="color: #7e22ce; text-decoration: none; font-weight: bold"> <i class="fas fa-sitemap"></i> Klik di sini: Analogi Tubuh Manusia (Gampang Ingat) </a>
+            </div>
+
+            <div id="semantic-doc-container"></div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarMenu");
+        if (window.innerWidth <= 992) {
+          sidebar.classList.toggle("active");
+        }
+      }
+    </script>
+    <script src="script-html.js"></script>
+  </body>
+</html>

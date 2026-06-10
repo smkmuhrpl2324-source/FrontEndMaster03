@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🎮 Master DOM Laboratory</title>
+    <style>
+      :root {
+        --slate-900: #0f172a;
+        --slate-100: #f1f5f9;
+        --blue-link: #0284c7;
+        --emerald: #10b981;
+        --crimson: #e11d48;
+        --amber: #d97706;
+        --purple: #8b5cf6;
+        --dark-bg: #0f172a;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background-color: #f1f5f9;
+        color: #334155;
+        padding: 15px;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* TOMBOL KEMBALI KE BERANDA */
+      .btn-back-home {
+        align-self: flex-start;
+        max-width: 800px;
+        width: auto;
+        margin: 5px auto 15px auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #475569;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        text-decoration: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease;
+      }
+      .btn-back-home:hover {
+        background-color: #f8fafc;
+        color: var(--slate-900);
+        border-color: #94a3b8;
+        transform: translateY(-1px);
+      }
+
+      h1 {
+        color: var(--slate-900);
+        margin: 10px 0 2px 0;
+        font-size: 1.6rem;
+        text-align: center;
+      }
+      .sub {
+        color: #64748b;
+        margin-bottom: 20px;
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 0 10px;
+      }
+
+      /* TAB MENU RESPONSIVE */
+      .sandbox-nav {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        max-width: 800px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: auto;
+      }
+
+      .sandbox-nav::-webkit-scrollbar {
+        height: 8px;
+      }
+      .sandbox-nav::-webkit-scrollbar-track {
+        background: #e2e8f0;
+        border-radius: 4px;
+      }
+      .sandbox-nav::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      .sandbox-nav::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .btn-nav {
+        flex: 0 0 auto;
+        padding: 10px 16px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border: 2px solid #cbd5e1;
+        background-color: #e2e8f0;
+        color: #475569;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .btn-nav.nav-active {
+        background-color: white;
+        color: var(--blue-link);
+        border-color: var(--blue-link);
+      }
+
+      /* CONTAINER UTAMA */
+      .sandbox-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 800px;
+        gap: 15px;
+      }
+
+      .panel {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        box-sizing: border-box;
+      }
+
+      .workshop-space {
+        background-color: #ffffff;
+        border: 2px dashed #cbd5e1;
+      }
+
+      /* PANGGUNG LIVE CANVAS */
+      .canvas-area {
+        width: 100%;
+        height: 220px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        position: relative;
+        background-color: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        padding-bottom: 15px;
+        box-sizing: border-box;
+      }
+
+      /* BOX MISI & ACCORDION HINT */
+      .mission-container {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+      }
+
+      .mission-header {
+        padding: 12px;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: #1e3a8a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .btn-hint-toggle {
+        background-color: #fef3c7;
+        border: 1px solid #f59e0b;
+        color: #b45309;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      .btn-hint-toggle:hover {
+        background-color: #fde68a;
+      }
+
+      .hint-drawer {
+        background-color: #fffbeb;
+        border-top: 1px dashed #fcd34d;
+        padding: 0 15px;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.25s ease-out,
+          padding 0.25s ease-out;
+        font-size: 0.8rem;
+        line-height: 1.7;
+        color: #78350f;
+      }
+      .hint-drawer.open {
+        max-height: 300px;
+        padding: 12px 15px;
+        overflow-y: auto;
+      }
+
+      /* EDITOR KODE FORM */
+      .code-workplace {
+        background-color: var(--dark-bg);
+        color: #94a3b8;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        line-height: 2.6;
+        box-sizing: border-box;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .code-blank {
+        background-color: #1e293b;
+        border: 1px dashed #38bdf8;
+        color: #38bdf8;
+        font-family: monospace;
+        font-size: 0.85rem;
+        padding: 3px 6px;
+        border-radius: 4px;
+        outline: none;
+        width: 125px;
+        text-align: center;
+        box-sizing: border-box;
+        transition: all 0.2s;
+        display: inline-block;
+        margin: 2px 0;
+      }
+      .code-blank:focus {
+        border-color: var(--emerald);
+        background-color: #0f172a;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+      }
+
+      /* STYLING OBJEK UNTUK 10 LEVEL */
+      .base-obj {
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.5s ease;
+      }
+
+      /* Lvl 1: Mobil */
+      .obj-mobil {
+        bottom: 15px;
+        left: 15px;
+        width: 90px;
+        height: 35px;
+      }
+      .bodi-m {
+        width: 100%;
+        height: 20px;
+        background: var(--crimson);
+        border-radius: 5px 15px 5px 5px;
+      }
+      .roda-m {
+        width: 16px;
+        height: 16px;
+        background: #222;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+      }
+
+      /* Lvl 2: Roket */
+      .obj-roket {
+        bottom: 10px;
+        left: 45%;
+        width: 30px;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .r-top {
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 20px solid #64748b;
+      }
+      .r-body {
+        width: 30px;
+        height: 40px;
+        background: #cbd5e1;
+      }
+      .r-fire {
+        width: 10px;
+        height: 15px;
+        background: var(--amber);
+        display: none;
+      }
+
+      /* Lvl 3: Lampu */
+      .obj-lampu {
+        bottom: 30px;
+        left: 45%;
+        width: 50px;
+        height: 50px;
+        background: #64748b;
+        border-radius: 50%;
+        border: 4px solid #475569;
+      }
+
+      /* Lvl 4: Hantu */
+      .obj-hantu {
+        bottom: 40px;
+        left: 40%;
+        width: 50px;
+        height: 60px;
+        background: #e2e8f0;
+        border-radius: 25px 25px 0 0;
+        text-align: center;
+        font-size: 1.5rem;
+        line-height: 45px;
+      }
+
+      /* Lvl 5: Kotak Kado */
+      .obj-kado {
+        bottom: 20px;
+        left: 42%;
+        width: 50px;
+        height: 50px;
+        background: var(--purple);
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      /* Lvl 6: Ketukan */
+      .obj-drum {
+        bottom: 20px;
+        left: 40%;
+        width: 70px;
+        height: 50px;
+        background: #b45309;
+        border-radius: 8px;
+        border-top: 8px solid #fef3c7;
+      }
+
+      /* Lvl 7: Input Balon */
+      .obj-balon {
+        bottom: 50px;
+        left: 45%;
+        width: 45px;
+        height: 55px;
+        background: #06b6d4;
+        border-radius: 50%;
+        transform: scale(1);
+      }
+      .input-box-lvl7 {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 6px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      /* Lvl 8: Koin Emas */
+      .obj-koin {
+        bottom: 40px;
+        left: 45%;
+        width: 45px;
+        height: 45px;
+        background: #f59e0b;
+        border-radius: 50%;
+        border: 4px dashed #d97706;
+      }
+
+      /* Lvl 9: Bunglon */
+      .obj-bunglon {
+        bottom: 30px;
+        left: 40%;
+        width: 80px;
+        height: 35px;
+        background: #22c55e;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        line-height: 35px;
+        font-size: 0.75rem;
+      }
+
+      /* Lvl 10: Ketapel */
+      .obj-burung {
+        bottom: 20px;
+        left: 20px;
+        width: 35px;
+        height: 35px;
+        background: #ef4444;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+      }
+
+      /* CONTROLLER UTAMA */
+      .btn-run {
+        width: 100%;
+        padding: 16px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        background-color: #2563eb;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background 0.2s;
+      }
+      .btn-run:hover {
+        background-color: #1d4ed8;
+      }
+      .status-alert {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" class="btn-back-home">⬅️ Kembali ke Beranda</a>
+
+    <h1>🎮 Master DOM Lab</h1>
+    <div class="sub">Hubungkan 5 potongan instruksi JavaScript di setiap level untuk mengontrol objek!</div>
+
+    <div class="sandbox-nav" id="nav-container"></div>
+
+    <div class="sandbox-container">
+      <div class="panel workshop-space">
+        <div class="canvas-area" id="panggung-canvas"></div>
+      </div>
+
+      <div class="panel">
+        <div class="mission-container">
+          <div class="mission-header">
+            <div id="mission-desc"></div>
+            <button class="btn-hint-toggle" id="hint-toggle-txt" onclick="toggleGordenHint()">💡 LIHAT HINT</button>
+          </div>
+          <div class="hint-drawer" id="hint-drawer-content"></div>
+        </div>
+
+        <div class="code-workplace" id="code-template-area"></div>
+
+        <button class="btn-run" onclick="periksaJawabanSiswa()">⚡ JALANKAN STRUKTUR PROGRAM</button>
+        <div id="alert-log" class="status-alert"></div>
+      </div>
+    </div>
+
+    <script>
+      let lvlAktif = 1;
+      let hintTerbuka = false;
+
+      const databaseLevel = {
+        1: {
+          nama: "Lvl 1: Mobil",
+          misi: "Gunakan perintah pembuatan elemen standar untuk merakit mobil balap dan aktifkan sensor ketukan (klik) agar mobil melaju maju!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Perintah DOM untuk menciptakan elemen HTML baru secara dinamis.<br>" +
+            "• <strong>Kotak 2:</strong> <code>className</code> → Properti untuk memberikan atau memodifikasi nama kelas CSS objek.<br>" +
+            "• <strong>Kotak 3:</strong> <code>obj-mobil</code> → String nama kelas CSS spesifik yang mengatur wujud bentuk mobil.<br>" +
+            "• <strong>Kotak 4:</strong> <code>appendChild</code> → Fungsi untuk memasukkan elemen anak (roda) ke dalam elemen induk.<br>" +
+            "• <strong>Kotak 5:</strong> <code>onclick</code> → Event listener untuk mendeteksi ketukan jari tunggal atau klik pada objek.",
+          template: `<span style="color:#f43f5e">const</span> mobil = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>mobil.<input type="text" id="b-2" class="code-blank" placeholder="kotak 2"> = '<input type="text" id="b-3" class="code-blank" placeholder="kotak 3">';<br>mobil.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">(document.createElement('div')); <span style="color:#64748b">//roda</span><br>document.getElementById('panggung-canvas').appendChild(mobil);<br>mobil.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = () => { mobil.style.left = '400px'; };`,
+          kunci: ["createElement", "className", "obj-mobil", "appendChild", "onclick"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const mobil = document.createElement("div");
+            mobil.className = "base-obj obj-mobil";
+            mobil.innerHTML = "<div class='bodi-m'></div><div class='roda-m' style='left:10px;'></div><div class='roda-m' style='right:10px;'></div>";
+            canvas.appendChild(mobil);
+            mobil.onclick = () => {
+              mobil.style.left = "400px";
+            };
+          },
+        },
+        2: {
+          nama: "Lvl 2: Roket",
+          misi: "Buat roket berdiri di panggung dan picu mesin apinya agar meluncur vertikal ke atas saat bagian badan roket ditekan!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Digunakan untuk membuat struktur kontainer node div baru.<br>" +
+            "• <strong>Kotak 2:</strong> <code>obj-roket</code> → Nama pengenal gaya CSS agar komponen roket tersusun vertikal.<br>" +
+            "• <strong>Kotak 3:</strong> <code>appendChild</code> → Menyisipkan komponen tambahan ke dalam bodi utama roket.<br>" +
+            "• <strong>Kotak 4:</strong> <code>onclick</code> → Menangkap perintah ketukan pengguna untuk memicu pembakaran mesin.<br>" +
+            "• <strong>Kotak 5:</strong> <code>bottom</code> → Properti posisi CSS untuk menggerakkan objek naik menjauhi lantai panggung.",
+          template: `<span style="color:#f43f5e">const</span> roket = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>roket.className = 'base-obj <input type="text" id="b-2" class="code-blank" placeholder="kotak 2">';<br>roket.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3">(document.createElement('div'));<br>document.getElementById('panggung-canvas').appendChild(roket);<br>roket.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4"> = () => {<br>&nbsp;&nbsp;roket.style.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = '220px';<br>};`,
+          kunci: ["createElement", "obj-roket", "appendChild", "onclick", "bottom"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const roket = document.createElement("div");
+            roket.className = "base-obj obj-roket";
+            roket.innerHTML = "<div class='r-top'></div><div class='r-body'></div><div class='r-fire' id='api-r'></div>";
+            canvas.appendChild(roket);
+            roket.onclick = () => {
+              document.getElementById("api-r").style.display = "block";
+              roket.style.bottom = "220px";
+            };
+          },
+        },
+        3: {
+          nama: "Lvl 3: Saklar",
+          misi: "Gunakan event pemicu ganda (Double Click / dblclick) untuk menyalakan bohlam lampu dari abu-abu menjadi kuning terang!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Melahirkan elemen lingkaran fisik lampu.<br>" +
+            "• <strong>Kotak 2:</strong> <code>className</code> → Menghubungkan elemen lingkaran dengan selektor visual CSS Lampu.<br>" +
+            "• <strong>Kotak 3:</strong> <code>ondblclick</code> → Event khusus yang aktif hanya saat mendeteksi ketukan cepat sebanyak 2 kali.<br>" +
+            "• <strong>Kotak 4:</strong> <code>style</code> → Gerbang akses utama JavaScript untuk mengubah gaya presentasi visual elemen.<br>" +
+            "• <strong>Kotak 5:</strong> <code>backgroundColor</code> → Atribut CSS spesifik untuk mengubah warna latar bagian dalam objek.",
+          template: `<span style="color:#f43f5e">const</span> lampu = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>lampu.<input type="text" id="b-2" class="code-blank" placeholder="kotak 2"> = 'base-obj obj-lampu';<br>document.getElementById('panggung-canvas').appendChild(lampu);<br>lampu.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;lampu.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = '#f59e0b';<br>};`,
+          kunci: ["createElement", "className", "ondblclick", "style", "backgroundColor"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const lampu = document.createElement("div");
+            lampu.className = "base-obj obj-lampu";
+            canvas.appendChild(lampu);
+            lampu.ondblclick = () => {
+              lampu.style.backgroundColor = "#f59e0b";
+              lampu.style.borderColor = "#fef3c7";
+            };
+          },
+        },
+        4: {
+          nama: "Lvl 4: Hantu",
+          misi: "Buat objek hantu laboratorium. Hilangkan hantu tersebut (transparansi / opacity) secara instan saat kursor mendekat (mouseenter)!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>className</code> → Digunakan untuk mendaftarkan properti fisik penataan visual.<br>" +
+            "• <strong>Kotak 2:</strong> <code>obj-hantu</code> → Kelas CSS penentu wujud hantu abu-abu samar.<br>" +
+            "• <strong>Kotak 3:</strong> <code>onmouseenter</code> → Event yang otomatis terpicu begitu posisi kursor melintasi batas koordinat objek.<br>" +
+            "• <strong>Kotak 4:</strong> <code>style</code> → API bawaan untuk memanipulasi parameter lembar gaya inline elemen.<br>" +
+            "• <strong>Kotak 5:</strong> <code>opacity</code> → Pengatur tingkat kejelasan pandang objek (0 untuk transparan penuh, 1 untuk padat).",
+          template: `<span style="color:#f43f5e">const</span> hantu = document.createElement('div');<br>hantu.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1"> = 'base-obj <input type="text" id="b-2" class="code-blank" placeholder="kotak 2">';<br>hantu.innerText = "👻";<br>document.getElementById('panggung-canvas').appendChild(hantu);<br>hantu.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;hantu.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = '0';<br>};`,
+          kunci: ["className", "obj-hantu", "onmouseenter", "style", "opacity"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const hantu = document.createElement("div");
+            hantu.className = "base-obj obj-hantu";
+            hantu.innerText = "👻";
+            canvas.appendChild(hantu);
+            hantu.onmouseenter = () => {
+              hantu.style.opacity = "0";
+            };
+            hantu.ontouchstart = () => {
+              hantu.style.opacity = "0";
+            };
+          },
+        },
+        5: {
+          nama: "Lvl 5: Kado",
+          misi: "Rakit sebuah kotak kado misterius. Pasang sensor pelepasan klik (onmouseup) agar kado terbuka mengeluarkan emoji hadiah!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Berfungsi mencetak wadah elemen kado baru.<br>" +
+            "• <strong>Kotak 2:</strong> <code>className</code> → Properti penghubung ke blueprint selektor gaya tampilan.<br>" +
+            "• <strong>Kotak 3:</strong> <code>onmouseup</code> → Event yang bereaksi tepat saat pengguna melepaskan tekanan jari/tombol klik mouse.<br>" +
+            "• <strong>Kotak 4:</strong> <code>innerText</code> → Atribut teks murni di dalam tag untuk mengubah visual emoji dari box menjadi berlian.<br>" +
+            "• <strong>Kotak 5:</strong> <code>appendChild</code> → Perintah untuk menyuntikkan objek kado yang telah siap ke area panggung.",
+          template: `<span style="color:#f43f5e">const</span> kado = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>kado.<input type="text" id="b-2" class="code-blank" placeholder="kotak 2"> = 'base-obj obj-kado';<br>kado.innerText = "📦";<br>kado.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;kado.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4"> = "💎";<br>};<br>document.getElementById('panggung-canvas').<input type="text" id="b-5" class="code-blank" placeholder="kotak 5">(kado);`,
+          kunci: ["createElement", "className", "onmouseup", "innerText", "appendChild"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const kado = document.createElement("div");
+            kado.className = "base-obj obj-kado";
+            kado.innerText = "📦";
+            canvas.appendChild(kado);
+            kado.onmouseup = () => {
+              kado.innerText = "💎";
+              kado.style.background = "#10b981";
+            };
+          },
+        },
+        6: {
+          nama: "Lvl 6: Drum",
+          misi: "Buat instrumen musik mini. Ubah skala tinggi ukuran objek saat tombol tetikus ditekan kebawah (onmousedown) untuk mensimulasikan efek ketukan drum!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>className</code> → Digunakan untuk mendefinisikan identitas kelas gaya.<br>" +
+            "• <strong>Kotak 2:</strong> <code>obj-drum</code> → Penunjuk gaya CSS drum cokelat berpenutup kulit kuning gading.<br>" +
+            "• <strong>Kotak 3:</strong> <code>onmousedown</code> → Event yang bekerja sangat cepat saat tombol klik pertama kali ditekan ke bawah (sebelum dilepas).<br>" +
+            "• <strong>Kotak 4:</strong> <code>style</code> → Pintu interaksi pengubahan manifestasi visual lewat JavaScript.<br>" +
+            "• <strong>Kotak 5:</strong> <code>transform</code> → Atribut modifikasi geometri (untuk memampatkan bentuk fisik objek drum).",
+          template: `<span style="color:#f43f5e">const</span> drum = document.createElement('div');<br>drum.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1"> = 'base-obj <input type="text" id="b-2" class="code-blank" placeholder="kotak 2">';<br>document.getElementById('panggung-canvas').appendChild(drum);<br>drum.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;drum.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = 'scaleY(0.6)';<br>};`,
+          kunci: ["className", "obj-drum", "onmousedown", "style", "transform"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const drum = document.createElement("div");
+            drum.className = "base-obj obj-drum";
+            canvas.appendChild(drum);
+            const hitEffect = () => {
+              drum.style.transform = "scaleY(0.6)";
+              setTimeout(() => (drum.style.transform = "scaleY(1)"), 150);
+            };
+            drum.onmousedown = hitEffect;
+            drum.ontouchstart = hitEffect;
+          },
+        },
+        7: {
+          nama: "Lvl 7: Balon",
+          misi: "Tampilkan balon biru beserta kotak teks input di luar kanvas. Pasang detektor manipulasi ketikan input (oninput) untuk memperbesar ukuran balon secara dinamis!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>obj-balon</code> → Merujuk pada bundaran biru balon yang siap ditiup kembung.<br>" +
+            "• <strong>Kotak 2:</strong> <code>createElement</code> → Berperan merakit kolom pengetikan input teks baru.<br>" +
+            "• <strong>Kotak 3:</strong> <code>oninput</code> → Event pelacak yang langsung aktif setiap kali ada karakter huruf baru yang diketikkan.<br>" +
+            "• <strong>Kotak 4:</strong> <code>value</code> → Atribut penangkap string data tulisan nyata yang berada di dalam form input.<br>" +
+            "• <strong>Kotak 5:</strong> <code>transform</code> → Modifikasi CSS untuk memanipulasi perbesaran rasio skala (scale) balon.",
+          template: `<span style="color:#f43f5e">const</span> b = document.createElement('div'); b.className = 'base-obj <input type="text" id="b-1" class="code-blank" placeholder="kotak 1">';<br><span style="color:#f43f5e">const</span> inp = document.<input type="text" id="b-2" class="code-blank" placeholder="kotak 2">('input'); inp.className='input-box-lvl7';<br>document.getElementById('panggung-canvas').append(b, inp);<br>inp.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;<span style="color:#f43f5e">let</span> len = inp.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.length;<br>&nbsp;&nbsp;b.style.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = 'scale(' + (1 + len*0.2) + ')';<br>};`,
+          kunci: ["obj-balon", "createElement", "oninput", "value", "transform"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const b = document.createElement("div");
+            b.className = "base-obj obj-balon";
+            const inp = document.createElement("input");
+            inp.className = "input-box-lvl7";
+            inp.placeholder = "Ketik teks bebas...";
+            canvas.append(b, inp);
+            inp.oninput = () => {
+              b.style.transform = `scale(${1 + inp.value.length * 0.2})`;
+            };
+          },
+        },
+        8: {
+          nama: "Lvl 8: Koin",
+          misi: "Gunakan pendeteksi lepas kursor (onmouseleave) untuk memutar koin emas 360 derajat saat pengguna selesai menyentuh atau menggeser kursor keluar dari koin!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Perintah instan mencetak bulatan koin baru.<br>" +
+            "• <strong>Kotak 2:</strong> <code>className</code> → Digunakan untuk menaruh setelan manifestasi visual CSS koin emas bergigi.<br>" +
+            "• <strong>Kotak 3:</strong> <code>onmouseleave</code> → Event pemicu yang aktif tepat saat area kursor keluar meninggalkan perbatasan objek.<br>" +
+            "• <strong>Kotak 4:</strong> <code>style</code> → Digunakan untuk memodifikasi parameter presentasi visual.<br>" +
+            "• <strong>Kotak 5:</strong> <code>transform</code> → Mengakses perintah rotasi sumbu 3D (rotateY) untuk memutar badan koin.",
+          template: `<span style="color:#f43f5e">const</span> koin = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>koin.<input type="text" id="b-2" class="code-blank" placeholder="kotak 2"> = 'base-obj obj-koin';<br>document.getElementById('panggung-canvas').appendChild(koin);<br>koin.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;koin.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = 'rotateY(360deg)';<br>};`,
+          kunci: ["createElement", "className", "onmouseleave", "style", "transform"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const koin = document.createElement("div");
+            koin.className = "base-obj obj-koin";
+            canvas.appendChild(koin);
+            koin.onmouseleave = () => {
+              koin.style.transform = "rotateY(360deg)";
+            };
+          },
+        },
+        9: {
+          nama: "Lvl 9: Bunglon",
+          misi: "Buat objek hewan bunglon. Ubah nama kelas penata gayanya secara instan memanfaatkan pemicu fokus klik (onfocus) untuk menyamarkan warna kulitnya!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>createElement</code> → Digunakan untuk membuat wadah node div bunglon.<br>" +
+            "• <strong>Kotak 2:</strong> <code>obj-bunglon</code> → Kelas CSS penentu warna hijau dasar reptil.<br>" +
+            "• <strong>Kotak 3:</strong> <code>tabIndex</code> → Atribut HTML wajib agar elemen non-input (seperti div) bisa menerima status fokus sentuhan klik.<br>" +
+            "• <strong>Kotak 4:</strong> <code>onfocus</code> → Event listener yang menyala ketika elemen sedang dipilih/diklik aktif oleh user.<br>" +
+            "• <strong>Kotak 5:</strong> <code>style</code> → Jembatan instruksi penimpaan properti warna latar baru.",
+          template: `<span style="color:#f43f5e">const</span> bg = document.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1">('div');<br>bg.className = 'base-obj <input type="text" id="b-2" class="code-blank" placeholder="kotak 2">';<br>bg.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = 0; <span style="color:#64748b">//agar bisa di-fokus</span><br>bg.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4"> = () => {<br>&nbsp;&nbsp;bg.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5">.backgroundColor = '#e11d48';<br>};<br>document.getElementById('panggung-canvas').appendChild(bg);`,
+          kunci: ["createElement", "obj-bunglon", "tabIndex", "onfocus", "style"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const bg = document.createElement("div");
+            bg.className = "base-obj obj-bunglon";
+            bg.innerText = "🦎 BUNGLON";
+            bg.tabIndex = 0;
+            canvas.appendChild(bg);
+            bg.onfocus = () => {
+              bg.style.backgroundColor = "#e11d48";
+              bg.innerText = "🔴 RED MODE";
+            };
+          },
+        },
+        10: {
+          nama: "Lvl 10: Ketapel",
+          misi: "Level Final! Buat burung ketapel merah bergerak melesat secara horizontal ke sisi kanan panggung memanfaatkan pemicu pelepasan tombol ketik keyboard apa saja (onkeyup)!",
+          hint:
+            "• <strong>Kotak 1:</strong> <code>className</code> → Properti pengaturan identitas dekorasi objek.<br>" +
+            "• <strong>Kotak 2:</strong> <code>obj-burung</code> → Pengenal gaya visual CSS lingkar burung merah pemarah.<br>" +
+            "• <strong>Kotak 3:</strong> <code>onkeyup</code> → Event global window yang mendeteksi momen tepat saat jari selesai mengangkat tombol keyboard fisik.<br>" +
+            "• <strong>Kotak 4:</strong> <code>style</code> → Digunakan untuk memodifikasi parameter tata letak spasial.<br>" +
+            "• <strong>Kotak 5:</strong> <code>left</code> → Atribut CSS penentu jarak dari sisi kiri untuk mendorong burung meluncur ke kanan.",
+          template: `<span style="color:#f43f5e">const</span> burung = document.createElement('div');<br>burung.<input type="text" id="b-1" class="code-blank" placeholder="kotak 1"> = 'base-obj <input type="text" id="b-2" class="code-blank" placeholder="kotak 2">';<br>burung.innerText = "😡"; document.getElementById('panggung-canvas').appendChild(burung);<br>window.<input type="text" id="b-3" class="code-blank" placeholder="kotak 3"> = () => {<br>&nbsp;&nbsp;burung.<input type="text" id="b-4" class="code-blank" placeholder="kotak 4">.<input type="text" id="b-5" class="code-blank" placeholder="kotak 5"> = '600px';<br>};`,
+          kunci: ["className", "obj-burung", "onkeyup", "style", "left"],
+          aksiSukses: () => {
+            const canvas = document.getElementById("panggung-canvas");
+            canvas.innerHTML = "";
+            const burung = document.createElement("div");
+            burung.className = "base-obj obj-burung";
+            burung.innerText = "😡";
+            canvas.appendChild(burung);
+            window.onkeyup = () => {
+              burung.style.left = "600px";
+            };
+            canvas.onclick = () => {
+              burung.style.left = "600px";
+            };
+          },
+        },
+      };
+
+      // MEMBUAT TOMBOL NAVIGASI 1 SAMPAI 10 SECARA OTOMATIS
+      function inisialisasiNavbar() {
+        const container = document.getElementById("nav-container");
+        container.innerHTML = "";
+        for (let i = 1; i <= 10; i++) {
+          const btn = document.createElement("button");
+          btn.id = `nav-${i}`;
+          btn.className = i === 1 ? "btn-nav nav-active" : "btn-nav";
+          btn.textContent = databaseLevel[i].nama;
+          btn.onclick = () => gantiLevel(i);
+          container.appendChild(btn);
+        }
+
+        // FITUR TAMBAHAN DESKTOP: Mengaktifkan scroll bar dengan cara drag & hold tombol mouse
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        container.addEventListener("mousedown", (e) => {
+          isDown = true;
+          container.style.cursor = "grabbing";
+          startX = e.pageX - container.offsetLeft;
+          scrollLeft = container.scrollLeft;
+        });
+        container.addEventListener("mouseleave", () => {
+          isDown = false;
+          container.style.cursor = "default";
+        });
+        container.addEventListener("mouseup", () => {
+          isDown = false;
+          container.style.cursor = "default";
+        });
+        container.addEventListener("mousemove", (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - container.offsetLeft;
+          const walk = (x - startX) * 2;
+          container.scrollLeft = scrollLeft - walk;
+        });
+      }
+
+      function gantiLevel(nomor) {
+        lvlAktif = parseInt(nomor);
+        document.querySelectorAll(".btn-nav").forEach((btn, idx) => {
+          btn.className = idx + 1 === nomor ? "btn-nav nav-active" : "btn-nav";
+        });
+
+        const data = databaseLevel[lvlAktif];
+        document.getElementById("mission-desc").innerHTML = `🎯 <strong>Misi:</strong> ${data.misi}`;
+        document.getElementById("hint-drawer-content").innerHTML = data.hint;
+        document.getElementById("code-template-area").innerHTML = data.template;
+        document.getElementById("alert-log").style.display = "none";
+
+        hintTerbuka = false;
+        document.getElementById("hint-drawer-content").classList.remove("open");
+        document.getElementById("hint-toggle-txt").textContent = "💡 LIHAT HINT";
+
+        resetCanvas();
+      }
+
+      function toggleGordenHint() {
+        const drawer = document.getElementById("hint-drawer-content");
+        const btn = document.getElementById("hint-toggle-txt");
+        hintTerbuka = !hintTerbuka;
+
+        if (hintTerbuka) {
+          drawer.classList.add("open");
+          btn.textContent = "❌ TUTUP HINT";
+        } else {
+          drawer.classList.remove("open");
+          btn.textContent = "💡 LIHAT HINT";
+        }
+      }
+
+      function resetCanvas() {
+        document.getElementById("panggung-canvas").innerHTML = `
+                <div style="color: #94a3b8; font-style: italic; font-size: 0.8rem; text-align:center; width:100%;">
+                    [ Sempurnakan 5 potongan kode di bawah untuk memanggil objek level ${lvlAktif} ]
+                </div>`;
+      }
+
+      function periksaJawabanSiswa() {
+        const data = databaseLevel[lvlAktif];
+        const log = document.getElementById("alert-log");
+        log.style.display = "block";
+
+        let semuaBenar = true;
+        for (let i = 0; i < data.kunci.length; i++) {
+          const inputUser = document.getElementById(`b-${i + 1}`).value.trim();
+          if (inputUser !== data.kunci[i]) {
+            semuaBenar = false;
+            break;
+          }
+        }
+
+        if (semuaBenar) {
+          data.aksiSukses();
+          log.style.backgroundColor = "#dcfce7";
+          log.style.color = "#15803d";
+          log.innerHTML = `🎉 KODE BENAR (5/5)! Objek Level ${lvlAktif} berhasil diwujudkan.<br>Lakukan aksi/interaksi pada objek di monitor atas!`;
+        } else {
+          log.style.backgroundColor = "#ffe4e6";
+          log.style.color = "#b91c1c";
+          log.textContent = "⚠️ KODE BELUM LENGKAP ATAU SALAH KETIK. Periksa kembali huruf besar/kecilnya atau buka menu LIHAT HINT!";
+          resetCanvas();
+        }
+      }
+
+      // Jalankan sistem saat pertama kali dimuat
+      inisialisasiNavbar();
+      gantiLevel(1);
+    </script>
+  </body>
+</html>

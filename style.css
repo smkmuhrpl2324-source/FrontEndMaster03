@@ -1,0 +1,423 @@
+/* =========================================
+   1. VARIABEL & RESET
+   ========================================= */
+:root {
+  --color-1: #bde8f5;
+  --color-2: #4988c4;
+  --color-3: #1c4d8d;
+  --color-4: #0f2854;
+  --amber: #f59e0b;
+  --white: #ffffff;
+  --text-dark: #0f2854;
+  --google-blue: #4285f4;
+  --danger: #ef4444;
+  --transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Inter", "Roboto", sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  padding-top: 70px;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Tombol Mulai (Orange) */
+.btn-primary {
+  background-color: #f59e0b !important; /* Warna Amber */
+  color: white !important;
+  padding: 14px 32px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  display: inline-flex;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #d97706 !important; /* Warna Amber Gelap saat hover */
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+}
+
+/* =========================================
+   2. NAVBAR & NAVIGATION (DESKTOP)
+   ========================================= */
+.navbar {
+  background: var(--white);
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  z-index: 2000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: all 0.3 ease;
+}
+
+.nav-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-4);
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  z-index: 2001; /* Tetap di atas menu sidebar */
+}
+
+.logo span {
+  color: var(--color-2);
+}
+
+.menu-toggle {
+  display: none; /* Sembunyikan di desktop */
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: var(--color-4);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-menu a:not(.nav-cta):not(.btn-login):not(.btn-logout)::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: var(--color-2);
+  transition: 0.3s;
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+.nav-cta {
+  background: var(--color-4);
+  color: white !important;
+  padding: 10px 22px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(15, 40, 84, 0.2);
+}
+
+.btn-login {
+  border: 1.5px solid var(--google-blue);
+  padding: 8px 18px;
+  border-radius: 10px;
+  color: var(--google-blue) !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: white;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f1f5f9;
+  padding: 6px 15px;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-logout {
+  background: var(--danger);
+  color: white !important;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* =========================================
+   3. HERO SECTION
+   ========================================= */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 5% 60px 5%;
+  background: linear-gradient(135deg, var(--color-1) 0%, #e0f2fe 100%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-text h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--color-4);
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #334155;
+  max-width: 500px;
+  margin-bottom: 35px;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  animation: floating 3s ease-in-out infinite;
+}
+
+/* =========================================
+   4. CARDS & SECTIONS
+   ========================================= */
+.section {
+  padding: 90px 0;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.3rem;
+  margin-bottom: 50px;
+  font-weight: 800;
+}
+
+.section-materi {
+  background-color: var(--color-2);
+  color: white;
+}
+
+.section-permainan {
+  background-color: var(--color-3);
+  color: white;
+}
+.section-kuis {
+  background-color: var(--color-4);
+  color: white;
+}
+
+.grid-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  padding: 40px 30px;
+  border-radius: 24px;
+  transition: var(--transition);
+  text-align: center;
+}
+
+/* Menghilangkan garis bawah pada semua link materi */
+.card a {
+  text-decoration: none !important;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+.card-white {
+  background: white;
+  color: var(--text-dark);
+}
+.card-glass {
+  background: var(--color-4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+.card-dark {
+  background: var(--color-3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-kuis {
+  text-decoration: none !important;
+  padding: 10px 25px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+
+/* =========================================
+   5. RESPONSIVE DESIGN (KUNCI UTAMA)
+   ========================================= */
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+  }
+  .hero-text h1 {
+    font-size: 2.8rem;
+  }
+  .hero-subtitle {
+    margin: 0 auto 30px;
+  }
+  .grid-card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* HP / MOBILE */
+@media (max-width: 768px) {
+  /* 1. Hamburger Icon */
+  .menu-toggle {
+    display: flex !important;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 2002;
+  }
+
+  .menu-toggle span {
+    width: 28px;
+    height: 3px;
+    background: var(--color-4);
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  /* 2. Mobile Sidebar */
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2000;
+    padding: 50px 0;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  /* 3. Hamburger Animation to X */
+  .menu-toggle.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .menu-toggle.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* 4. Layout Adjustments */
+  .grid-card {
+    grid-template-columns: 1fr;
+  }
+
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-praktik-hero {
+    border: 2px solid #0f2854 !important;
+    color: #0f2854 !important;
+    background: transparent !important;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    display: inline-flex;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+  .hero-image {
+    order: -1;
+  } /* Gambar muncul di atas teks di HP */
+}
+
+/* FOOTER */
+.footer {
+  background: #030712;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 40px 0;
+  font-size: 0.8rem;
+}
+
+/* ANIMATIONS */
+/* =========================================
+   ANIMASI REVEAL (Tanpa Merusak Gaya Tombol)
+   ========================================= */
+.reveal,
+.reveal-left,
+.reveal-right {
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none; /* Mencegah klik sebelum muncul */
+}
+
+.reveal {
+  transform: translateY(40px);
+}
+.reveal-left {
+  transform: translateX(-60px);
+}
+.reveal-right {
+  transform: translateX(60px);
+}
+
+/* Saat Aktif */
+.reveal.active,
+.reveal-left.active,
+.reveal-right.active {
+  opacity: 1;
+  transform: translate(0, 0);
+  pointer-events: auto; /* Bisa diklik kembali */
+}

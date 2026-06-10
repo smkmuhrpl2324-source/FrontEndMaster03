@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modul Lengkap CSS3 - Mastering Design</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --css-primary: #2563eb;
+        --css-bg: #f8fafc;
+        --code-bg: #1e293b;
+        --sidebar-width: 260px;
+      }
+
+      * {
+        box-sizing: border-box; /* Memastikan padding tidak merusak ukuran elemen */
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.6;
+        background: var(--css-bg);
+        color: #334155;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- STYLE SIDEBAR --- */
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: white;
+        border-right: 1px solid #e2e8f0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding: 30px 15px;
+        overflow-y: auto;
+        z-index: 1200; /* Dinaikkan agar berada di atas konten saat mobile slide-in */
+        transition: transform 0.3s ease;
+      }
+      .sidebar-brand {
+        font-weight: bold;
+        color: #2563eb;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        display: block;
+        text-decoration: none;
+      }
+      .sidebar h4 {
+        margin-top: 0;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: #94a3b8;
+        letter-spacing: 0.5px;
+      }
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+      .sidebar ul li {
+        margin-bottom: 8px;
+      }
+      .sidebar ul li a {
+        display: block;
+        padding: 12px 15px;
+        color: #475569;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+      .sidebar ul li a:hover {
+        background: #eff6ff;
+        color: var(--css-primary);
+      }
+
+      /* --- ANIMASI SCROLL (REVEAL) --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- AREA KONTEN UTAMA --- */
+      .container {
+        max-width: 1000px;
+        margin-left: var(--sidebar-width);
+        flex: 1;
+        padding: 40px 60px;
+        min-width: 0; /* Mengunci konten agar tidak overflow secara horizontal */
+      }
+      .materi-card {
+        background: white;
+        border-radius: 15px;
+        padding: 35px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        scroll-margin-top: 100px; /* Jarak pas scroll bab agar tidak tertutup tombol mobile */
+      }
+      h2 {
+        color: var(--css-primary);
+        border-bottom: 3px solid #dbeafe;
+        padding-bottom: 10px;
+      }
+      h3 {
+        color: #1e40af;
+        margin-top: 25px;
+      }
+      p {
+        margin-bottom: 15px;
+      }
+      .code-block {
+        background: var(--code-bg);
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: "Fira Code", monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+        position: relative;
+        border-left: 5px solid var(--css-primary);
+        margin: 20px 0;
+      }
+      .code-header {
+        background: #0f172a;
+        color: #94a3b8;
+        padding: 8px 16px;
+        font-family: sans-serif;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: -20px;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+      }
+      .code-header span {
+        color: var(--css-primary);
+      }
+      .comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .selector {
+        color: #f87171;
+      }
+      .property,
+      .prop {
+        color: #60a5fa;
+      }
+      .value,
+      .val {
+        color: #34d399;
+      }
+      .btn-eksplorasi {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: #eff6ff;
+        color: var(--css-primary);
+        border: 1px solid var(--css-primary);
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .btn-eksplorasi:hover {
+        background: var(--css-primary);
+        color: white;
+      }
+      .step-badge {
+        background: var(--css-primary);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .alert-box {
+        background: #fefce8;
+        border-left: 5px solid #facc15;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      .highlight {
+        background: #fef08a;
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+      .nav-materi {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 60px;
+        padding-bottom: 80px;
+      }
+
+      /* Tombol Menu Mobile */
+      .mobile-trigger {
+        display: none;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1300;
+        background: var(--css-primary);
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* ===================================================
+         MEDIA QUERIES (SISTEM RESPONSIVITAS PERANGKAT)
+         =================================================== */
+      @media (max-width: 992px) {
+        .mobile-trigger {
+          display: block; /* Tampilkan tombol menu di tablet/HP */
+        }
+        .sidebar {
+          transform: translateX(-100%); /* Sembunyikan sidebar ke luar layar kiri */
+          padding-top: 80px; /* Mendorong link Beranda ke bawah agar tidak tertutup tombol */
+        }
+        .sidebar.active {
+          transform: translateX(0); /* Geser masuk saat tombol ditekan */
+        }
+        .container {
+          margin-left: 0;
+          padding: 30px 24px;
+          width: 100%;
+        }
+        header {
+          margin-top: 60px !important; /* Beri jarak atas agar judul modul tidak tertabrak tombol */
+        }
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2.2rem !important;
+        }
+        .materi-card {
+          padding: 25px 20px;
+        }
+        .code-block {
+          padding: 15px;
+          font-size: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="mobile-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i> Menu Modul</button>
+
+    <nav class="sidebar" id="sidebarMenu">
+      <a href="index.html#materi" class="sidebar-brand"> <i class="fas fa-chevron-left"></i> Beranda </a>
+      <h4>Daftar Isi Bab</h4>
+      <ul>
+        <li>
+          <a href="#bab1" onclick="toggleSidebar()"><i class="fas fa-code"></i> Bab 1: Sintaksis</a>
+        </li>
+        <li>
+          <a href="#bab2" onclick="toggleSidebar()"><i class="fas fa-mouse-pointer"></i> Bab 2: Selector</a>
+        </li>
+        <li>
+          <a href="#bab3" onclick="toggleSidebar()"><i class="fas fa-box"></i> Bab 3: Box Model</a>
+        </li>
+        <li>
+          <a href="#bab4" onclick="toggleSidebar()"><i class="fas fa-font"></i> Bab 4: Tipografi</a>
+        </li>
+        <li>
+          <a href="#bab5" onclick="toggleSidebar()"><i class="fas fa-layer-group"></i> Bab 5: Flexbox</a>
+        </li>
+        <li>
+          <a href="#bab6" onclick="toggleSidebar()"><i class="fas fa-mobile-alt"></i> Bab 6: Responsif</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <header style="text-align: center; margin-bottom: 60px">
+        <h1 style="font-size: 3rem; color: #1e293b; margin-bottom: 10px">🎨 Modul 2 : Master <span style="color: var(--css-primary)">CSS3</span></h1>
+        <p style="font-size: 1.2rem; color: #64748b">Panduan Lengkap Menguasai Tata Letak dan Visual Web Modern.</p>
+      </header>
+
+      <article class="materi-card reveal" id="bab1">
+        <h2>BAB 1: Sintaksis dan Cara Kerja</h2>
+        <p>CSS adalah bahasa yang kita gunakan untuk memberikan instruksi gaya kepada browser. Struktur dasarnya terdiri dari <b>Selector</b> (apa yang diubah) dan <b>Declaration Block</b> (perubahan apa yang dilakukan).</p>
+        <p>CSS bukan sekadar mewarnai. Nama <b>Cascading</b> berarti aturan yang "jatuh bertingkat". Jika ada dua perintah untuk satu elemen, browser akan memilih berdasarkan urutan atau kekuatan (Specificity).</p>
+
+        <h3>Tiga Cara Memasang CSS:</h3>
+        <ul>
+          <li><b>External CSS:</b> Menggunakan file terpisah <code>.css</code> (Paling disarankan).</li>
+          <li><b>Internal CSS:</b> Menulis di dalam tag <code>&lt;style&gt;</code> di dalam HTML.</li>
+          <li><b>Inline CSS:</b> Menulis langsung di atribut elemen (Hanya untuk darurat).</li>
+        </ul>
+
+        <div class="code-block">
+          <span class="comment">/* Selector { Property: Value; } */</span><br />
+          <span class="selector">p</span> { <br />
+          &nbsp;&nbsp;<span class="property">color</span>: <span class="value">blue</span>; <span class="comment">/* Mengubah warna teks */</span><br />
+          &nbsp;&nbsp;<span class="property">text-align</span>: <span class="value">center</span>; <span class="comment">/* Rata tengah */</span><br />
+          }
+        </div>
+
+        <a href="javascript:void(0)" onclick="renderCSSIntro()" class="btn-eksplorasi">Pelajari Filosofi CSS</a>
+        <div id="css-intro-container"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab2">
+        <h2>BAB 2: Selector, Class, dan ID</h2>
+        <p>Agar bisa menghias elemen dengan spesifik, kita perlu memahami perbedaan target selector.</p>
+
+        <h3>Jenis Selector Utama:</h3>
+        <ol>
+          <li><b>Tag Selector:</b> Menargetkan semua tag tertentu (contoh: <code>h1</code>).</li>
+          <li><b>Class Selector:</b> Menargetkan kelompok elemen (ditandai dengan titik <code>.nama-kelas</code>).</li>
+          <li><b>ID Selector:</b> Menargetkan satu elemen unik (ditandai dengan pagar <code>#nama-id</code>).</li>
+        </ol>
+
+        <div class="code-block">
+          <span class="comment">/* Semua paragraf jadi abu-abu */</span><br />
+          <span class="selector">p</span> { <span class="property">color</span>: <span class="value">gray</span>; }<br /><br />
+          <span class="comment">/* Hanya elemen dengan class 'penting' yang jadi tebal */</span><br />
+          <span class="selector">.penting</span> { <span class="property">font-weight</span>: <span class="value">bold</span>; }<br /><br />
+          <span class="comment">/* Hanya ID 'logo' yang punya lebar 100px */</span><br />
+          <span class="selector">#logo</span> { <span class="property">width</span>: <span class="value">100px</span>; }
+        </div>
+
+        <div class="code-header">Contoh Hover Effect <span>CSS3</span></div>
+        <div class="code-block code-css">
+          <span class="selector">.btn-login</span> { <span class="prop">background</span>: <span class="val">blue</span>; }<br />
+          <span class="comment" style="color: #475569">/* Efek saat mouse lewat */</span><br />
+          <span class="selector">.btn-login:hover</span> { <span class="prop">background</span>: <span class="val">darkblue</span>; <span class="prop">cursor</span>: <span class="val">pointer</span>; }
+        </div>
+
+        <div class="alert-box"><b>Tips:</b> Gunakan <span class="highlight">Class (.)</span> jika ingin menghias banyak elemen, gunakan <span class="highlight">ID (#)</span> hanya untuk satu elemen unik.</div>
+      </article>
+
+      <article class="materi-card reveal" id="bab3">
+        <h2>BAB 3: Memahami Box Model</h2>
+        <p>Setiap elemen HTML adalah kotak. Memahami Box Model adalah kunci agar layout website Anda tidak berantakan.</p>
+
+        <h3>Komponen Box Model:</h3>
+        <ul>
+          <li><b>Content:</b> Isi teks atau gambar.</li>
+          <li><b>Padding:</b> Ruang kosong di <b>dalam</b> kotak (antara konten dan garis tepi).</li>
+          <li><b>Border:</b> Garis tepi kotak.</li>
+          <li><b>Margin:</b> Ruang kosong di <b>luar</b> kotak (jarak antar elemen).</li>
+        </ul>
+
+        <div class="code-block">
+          <span class="selector">.kotak</span> {<br />
+          &nbsp;&nbsp;<span class="property">width</span>: <span class="value">300px</span>;<br />
+          &nbsp;&nbsp;<span class="property">padding</span>: <span class="value">20px</span>; <span class="comment">/* Jarak dalam */</span><br />
+          &nbsp;&nbsp;<span class="property">border</span>: <span class="value">5px solid black</span>;<br />
+          &nbsp;&nbsp;<span class="property">margin</span>: <span class="value">50px</span>; <span class="comment">/* Jarak luar */</span><br />
+          }
+        </div>
+
+        <div class="code-header">Mencegah Kotak Meluber <span>CSS3</span></div>
+        <div class="code-block code-css">
+          <span class="selector">*</span> { <span class="prop">box-sizing</span>: <span class="val">border-box</span>; } <br />
+          <span class="comment" style="color: #475569">/* Properti wajib agar padding tidak menambah lebar kotak! */</span>
+        </div>
+
+        <a href="javascript:void(0)" onclick="renderBoxModel()" class="btn-eksplorasi">Analogi Jaket Box Model</a>
+        <div id="box-model-container"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab4">
+        <h2>BAB 4: Tipografi dan Warna</h2>
+        <p>Visual yang baik dimulai dari keterbacaan teks dan harmoni warna.</p>
+
+        <div class="code-block">
+          <span class="selector">body</span> {<br />
+          &nbsp;&nbsp;<span class="property">font-family</span>: <span class="value">'Roboto', sans-serif</span>;<br />
+          &nbsp;&nbsp;<span class="property">font-size</span>: <span class="value">16px</span>;<br />
+          &nbsp;&nbsp;<span class="property">line-height</span>: <span class="value">1.8</span>; <span class="comment">/* Membuat teks tidak rapat */</span><br />
+          &nbsp;&nbsp;<span class="property">color</span>: <span class="value">#333333</span>; <span class="comment">/* Warna Hexadecimal */</span><br />
+          &nbsp;&nbsp;<span class="property">background-color</span>: <span class="value">rgba(0,0,0,0.05)</span>; <span class="comment">/* Warna dengan transparansi */</span><br />
+          }
+        </div>
+        <a href="javascript:void(0)" onclick="renderTypography()" class="btn-eksplorasi">Tips Memilih Font</a>
+        <div id="typography-container"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab5">
+        <h2>BAB 5: Flexbox (Tata Letak Modern)</h2>
+        <p>Flexbox menghilangkan kerumitan dalam mengatur posisi elemen agar sejajar atau rata tengah.</p>
+        <p>Lupakan cara lama menggunakan <code>float</code>. Flexbox adalah standar industri untuk membuat layout yang sejajar dengan rapi.</p>
+
+        <h3>Istilah Penting Flexbox:</h3>
+        <ul>
+          <li><b>justify-content:</b> Mengatur posisi horizontal (kiri, kanan, tengah, sebar).</li>
+          <li><b>align-items:</b> Mengatur posisi vertikal (atas, bawah, tengah).</li>
+          <li><b>flex-direction:</b> Mengatur arah elemen (baris atau kolom).</li>
+        </ul>
+
+        <div class="code-block">
+          <span class="selector">.parent</span> {<br />
+          &nbsp;&nbsp;<span class="property">display</span>: <span class="value">flex</span>;<br />
+          &nbsp;&nbsp;<span class="property">justify-content</span>: <span class="value">space-between</span>; <span class="comment">/* Jarak antar item otomatis */</span><br />
+          &nbsp;&nbsp;<span class="property">align-items</span>: <span class="value">center</span>; <span class="comment">/* Rata tengah vertikal */</span><br />
+          }
+        </div>
+
+        <div class="code-header">Membuat Navbar Sejajar <span>CSS3</span></div>
+        <div class="code-block code-css">
+          <span class="selector">.navbar</span> {<br />
+          &nbsp;&nbsp;<span class="prop">display</span>: <span class="val">flex</span>;<br />
+          &nbsp;&nbsp;<span class="prop">justify-content</span>: <span class="val">space-between</span>; <span class="comment" style="color: #475569">/* Jarak rata kiri-kanan */</span><br />
+          &nbsp;&nbsp;<span class="prop">align-items</span>: <span class="val">center</span>; <span class="comment" style="color: #475569">/* Rata tengah secara vertikal */</span><br />
+          }
+        </div>
+
+        <a href="javascript:void(0)" onclick="renderFlexbox()" class="btn-eksplorasi">Simulasi Antrean Flexbox</a>
+        <div id="flexbox-container"></div>
+      </article>
+
+      <article class="materi-card reveal" id="bab6">
+        <h2>BAB 6: Media Queries (Web Responsif)</h2>
+        <p>Teknik ini memungkinkan website berubah tampilan secara otomatis tergantung ukuran layar perangkat pengguna.</p>
+
+        <div class="code-block">
+          <span class="comment">/* Tampilan Desktop Utama */</span><br />
+          <span class="selector">.menu</span> { <span class="property">display</span>: <span class="value">flex</span>; }<br /><br />
+          <span class="comment">/* Perubahan untuk HP (Layar di bawah 600px) */</span><br />
+          <span class="selector">@media</span> (max-width: 600px) {<br />
+          &nbsp;&nbsp;<span class="selector">.menu</span> { <span class="property">flex-direction</span>: <span class="value">column</span>; }<br />
+          &nbsp;&nbsp;<span class="selector">body</span> { <span class="property">font-size</span>: <span class="value">14px</span>; }<br />
+          }
+        </div>
+
+        <div class="code-header">Kondisi Smartphone <span>CSS3</span></div>
+        <div class="code-block code-css">
+          <span class="selector">@media</span> (max-width: <span class="val">768px</span>) {<br />
+          &nbsp;&nbsp;<span class="selector">.container</span> { <span class="prop">flex-direction</span>: <span class="val">column</span>; }<br />
+          &nbsp;&nbsp;<span class="selector">.sidebar</span> { <span class="prop">display</span>: <span class="val">none</span>; } <span class="comment" style="color: #475569">/* Sembunyikan menu di HP */</span><br />
+          }
+        </div>
+
+        <a href="javascript:void(0)" onclick="renderResponsive()" class="btn-eksplorasi">Mengenal Breakpoints</a>
+        <div id="responsive-container"></div>
+      </article>
+    </div>
+
+    <script src="script-css.js"></script>
+
+    <script>
+      // Fungsi kontrol buka/tutup sidebar pada resolusi mobile perangkat
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarMenu");
+        if (window.innerWidth <= 992) {
+          sidebar.classList.toggle("active");
+        }
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        {
+          threshold: 0.15, // Memulai animasi saat 15% elemen terlihat
+        },
+      );
+
+      const revealElements = document.querySelectorAll(".reveal");
+      revealElements.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

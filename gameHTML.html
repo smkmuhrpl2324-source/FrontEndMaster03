@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>⚡CYBER-BUG SURVIVAL⚡</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        /* LATAR BELAKANG BARU: SEPERTI LAYAR RADAR MILITER CYBERPUNK */
+        background-color: #0a0f1d;
+        background-image: linear-gradient(rgba(18, 24, 45, 0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(18, 24, 45, 0.6) 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        user-select: none;
+        box-sizing: border-box;
+      }
+
+      @media (min-width: 480px) {
+        body {
+          padding: 20px;
+        }
+      }
+
+      .container {
+        background: rgba(13, 19, 33, 0.96);
+        border: 2px solid #00f3ff;
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
+        border-radius: 12px;
+        padding: 20px;
+        width: 100%;
+        max-width: 550px;
+        text-align: center;
+        box-sizing: border-box;
+        position: relative;
+      }
+
+      @media (min-width: 480px) {
+        .container {
+          padding: 25px;
+        }
+      }
+
+      h1 {
+        color: #ff007f;
+        text-shadow: 0 0 10px #ff007f;
+        margin: 0 0 5px 0;
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        line-height: 1.2;
+        word-wrap: break-word;
+      }
+
+      .subtitle {
+        color: #aaa;
+        font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+        margin-bottom: 20px;
+        line-height: 1.4;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      /* PANEL PETUNJUK PERMAINAN BARU */
+      .guide-panel {
+        background: rgba(255, 204, 0, 0.04);
+        border: 1px dashed #ffcc00;
+        border-radius: 6px;
+        padding: 12px;
+        margin-top: 15px;
+        text-align: left;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        color: #e0e0e0;
+      }
+      .guide-panel h3 {
+        margin: 0 0 6px 0;
+        color: #ffcc00;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .guide-panel ul {
+        margin: 0;
+        padding-left: 15px;
+      }
+      .guide-panel li {
+        margin-bottom: 4px;
+      }
+
+      .menu-flex {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .btn {
+        background: transparent;
+        border: 2px solid #39ff14;
+        color: #39ff14;
+        padding: 12px 20px;
+        font-family: inherit;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.1rem;
+        border-radius: 4px;
+        transition: 0.2s;
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
+        word-wrap: break-word;
+      }
+      .btn:hover {
+        background: #39ff14;
+        color: #000;
+        box-shadow: 0 0 15px #39ff14;
+      }
+      .btn-blue {
+        border-color: #00f3ff;
+        color: #00f3ff;
+        box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+      }
+      .btn-blue:hover {
+        background: #00f3ff;
+        color: #000;
+        box-shadow: 0 0 15px #00f3ff;
+      }
+
+      .btn-audio {
+        background: #111;
+        border: 1px solid #ffcc00;
+        color: #ffcc00;
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: bold;
+        border-radius: 4px;
+      }
+      .btn-audio:hover {
+        background: #ffcc00;
+        color: #000;
+      }
+
+      .btn-surrender {
+        background: transparent;
+        border: 2px solid #ff007f;
+        color: #ff007f;
+        padding: 8px 15px;
+        font-family: inherit;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.95rem;
+        border-radius: 4px;
+        margin-top: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: 0.2s;
+        box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
+      }
+      .btn-surrender:hover {
+        background: #ff007f;
+        color: #000;
+        box-shadow: 0 0 15px #ff007f;
+      }
+
+      /* TOMBOL HOME UNTUK NAVIGASI KE INDEX.HTML */
+      .btn-home {
+        background: transparent;
+        border: 2px solid #00f3ff;
+        color: #00f3ff;
+        padding: 10px 20px;
+        font-family: inherit;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        border-radius: 4px;
+        margin-top: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: 0.2s;
+        box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+      }
+      .btn-home:hover {
+        background: #00f3ff;
+        color: #000;
+        box-shadow: 0 0 15px #00f3ff;
+      }
+
+      .btn-reset {
+        background: transparent;
+        border: 1px dashed #ff007f;
+        color: #ff007f;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        margin-top: 12px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: bold;
+        border-radius: 4px;
+        transition: 0.2s;
+      }
+      .btn-reset:hover {
+        background: rgba(255, 0, 127, 0.1);
+        box-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
+      }
+
+      .conn-panel {
+        background: #0d1321;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border: 1px solid #223154;
+      }
+
+      input[type="text"] {
+        background: #050811;
+        border: 1px solid #00f3ff;
+        color: #39ff14;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        font-family: inherit;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+        outline: none;
+      }
+      input[type="text"]:focus {
+        border-color: #ff007f;
+        box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+      }
+
+      .hp-container {
+        background: #182033;
+        height: 12px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 10px 0 15px 0;
+      }
+      .hp-bar {
+        background: #ff007f;
+        width: 100%;
+        height: 100%;
+        transition: width 0.1s linear;
+      }
+      .opp-hp-bar {
+        background: #00f3ff;
+        width: 100%;
+        height: 100%;
+        transition: width 0.1s linear;
+      }
+
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+      @media (min-width: 400px) {
+        .status-grid {
+          grid-template-columns: repeat(4, 1fr);
+          text-align: center;
+        }
+      }
+
+      .status-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .status-item .label {
+        font-size: 0.72rem;
+        margin-bottom: 3px;
+        letter-spacing: 0.5px;
+      }
+      .status-item .value {
+        font-size: 0.95rem;
+      }
+
+      .arena {
+        background: #050811;
+        padding: 15px;
+        border-radius: 6px;
+        margin: 15px 0;
+        border: 1px dashed #223154;
+      }
+      .bug-sprite {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        margin: 10px 0;
+        animation: shake 0.2s infinite alternate;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(5px);
+        }
+      }
+
+      .code-box {
+        background: #0d1321;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 4px;
+        color: #00f3ff;
+        margin-bottom: 5px;
+        word-wrap: break-word;
+        border: 1px solid #1a2642;
+      }
+
+      .feedback-box {
+        height: 18px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #ff007f;
+        text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+      }
+
+      .input-gun {
+        background: #0d1321;
+        border: 2px solid #ff007f;
+        color: #39ff14;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1.1rem;
+        font-family: inherit;
+        text-align: center;
+        outline: none;
+      }
+
+      .leaderboard {
+        margin-top: 25px;
+        border-top: 1px dashed #223154;
+        padding-top: 10px;
+        width: 100%;
+      }
+
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        min-width: 450px;
+      }
+      th,
+      td {
+        padding: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>⚡BUG SURVIVAL</h1>
+      <div class="subtitle">HTML Code Defence Terminal</div>
+
+      <button id="audio-toggle-btn" class="btn btn-audio" onclick="toggleAudioMaster()">🔊 AUDIO: OFF</button>
+
+      <div id="name-screen">
+        <p>Masukkan Nickname Agen / Profil Kamu:</p>
+        <input type="text" id="player-name-input" placeholder="CONTOH: CYBER_GHOST" maxlength="15" />
+        <br />
+        <button class="btn" onclick="submitName()">KONFIRMASI PROFIL</button>
+
+        <div class="guide-panel">
+          <h3>🎮 TERMINAL DEFENCE GUIDE:</h3>
+          <ul>
+            <li>Analisis kode target yang rusak (tanda tanya <strong>...?</strong>).</li>
+            <li>Ketik potongan tag HTML yang benar untuk menambal bug.</li>
+            <li>Jika ketikanmu **salah**, teks otomatis dihapus dan Core HP-mu berkurang. Tebak ulang sampai tepat!</li>
+            <li>Jawaban yang benar hanya akan dibocorkan jika waktu/darahmu habis total.</li>
+            <li>Solo Mode dibatasi 30 detik. Multiplayer PvP dibatasi 40 detik.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="main-menu" class="hidden">
+        <p>Selamat Datang, <span id="display-profile-name" style="color: #39ff14; font-weight: bold">PLAYER</span>! Pilih mode simulasi:</p>
+        <div class="menu-flex">
+          <button class="btn" onclick="selectMode('solo')">🟢 SOLO MODE (SURVIVAL)</button>
+          <button class="btn btn-blue" onclick="selectMode('multiplayer')">🔵 MULTIPLAYER (ONLINE PVP)</button>
+        </div>
+        <a href="#" onclick="changeName()" style="color: #555; font-size: 0.8rem; text-decoration: none">[ Ganti Nama Profil ]</a>
+      </div>
+
+      <div id="multi-setup-screen" class="conn-panel hidden">
+        <p style="font-size: 0.9rem; color: #aaa">ID Jaringan Kamu:</p>
+        <h2 id="my-id" style="color: #39ff14; margin: 5px 0; letter-spacing: 2px; text-shadow: 0 0 5px #39ff14">CONNECTING...</h2>
+        <hr style="border-color: #223154; margin: 15px 0" />
+        <p style="font-size: 0.9rem; color: #aaa">Masukkan ID Lawan untuk Terhubung:</p>
+        <input type="text" id="peer-id-input" placeholder="CONTOH: BUG-123" autocomplete="off" /><br />
+        <button class="btn btn-blue" onclick="connectToPeer()">HUBUNGKAN JARINGAN</button>
+        <br /><br />
+        <a href="#" onclick="backToMenu()" style="color: #ff007f; font-size: 0.85rem; text-decoration: none">[ KEMBALI KE MENU ]</a>
+      </div>
+
+      <div id="waiting-screen" class="hidden">
+        <p style="color: #00f3ff">MENUNGGU INPUT TANTANGAN BALIK...</p>
+      </div>
+
+      <div id="game-screen" class="hidden">
+        <div class="status-grid">
+          <div class="status-item" style="border-left: 2px solid #ff007f">
+            <span class="label" style="color: #ff007f">🔴 CORE</span>
+            <span class="value" id="label-user-hp" style="color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">-</span>
+          </div>
+          <div class="status-item">
+            <span class="label" style="color: #39ff14">🟢 WAKTU</span>
+            <span class="value" id="game-timer" style="color: #39ff14">--s</span>
+          </div>
+          <div class="status-item">
+            <span class="label" style="color: #ffcc00">🟡 PROGRESS</span>
+            <span class="value" id="game-progress" style="color: #ffcc00">0/30</span>
+          </div>
+          <div class="status-item">
+            <span class="label" style="color: #00f3ff">🔵 BOUNTY</span>
+            <span class="value" id="my-score" style="color: #00f3ff">$0</span>
+          </div>
+        </div>
+
+        <div class="hp-container"><div id="my-hp" class="hp-bar"></div></div>
+
+        <div id="opp-status-panel">
+          <div style="display: flex; justify-content: space-between; font-weight: bold; color: #00f3ff; font-size: 0.9rem; margin-top: 5px">
+            <span id="label-opp-name">🔵 CORE LAWAN</span>
+            <span id="opp-score">BOUNTY: $0</span>
+          </div>
+          <div class="hp-container"><div id="opp-hp" class="opp-hp-bar"></div></div>
+        </div>
+
+        <div class="arena">
+          <div id="bug-name" style="font-weight: bold; color: #ff007f">BUG.EXE</div>
+          <div id="bug-sprite" class="bug-sprite">🪳</div>
+        </div>
+        <div class="code-box" id="code-target">KODE HTML</div>
+        <div class="feedback-box" id="feedback-line"></div>
+        <input type="text" id="gun-input" class="input-gun" placeholder="KETIK CEPAT..." autocomplete="off" />
+
+        <button id="surrender-btn" class="btn-surrender" onclick="triggerSurrender()">🏳️ MENYERAH (STOP)</button>
+      </div>
+
+      <div class="leaderboard" id="local-history">
+        <h4 style="margin: 5px 0; color: #aaa">📊 MEMORI REKOR SKOR</h4>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>NAMA AGEN</th>
+                <th>MODE</th>
+                <th>SKOR</th>
+                <th>DURASI</th>
+                <th>HASIL</th>
+              </tr>
+            </thead>
+            <tbody id="history-box"></tbody>
+          </table>
+        </div>
+        <button class="btn-reset" onclick="resetLocalHistory()">♻️ RESET REKOR SKOR</button>
+
+        <button class="btn-home" onclick="window.location.href = 'index.html'">🏠 KEMBALI KE BERANDA</button>
+      </div>
+    </div>
+
+    <script>
+      const masterAmunisi = [
+        { name: "PARAGRAF", icon: "🪳", code: "<p> Paragraf Baru ...? >", ans: "</p>" },
+        { name: "TEBAL", icon: "🕷️", code: "<...? > Teks Tebal </strong>", ans: "<strong>" },
+        { name: "MIRING", icon: "🦟", code: "<em> Teks Miring ...? >", ans: "</em>" },
+        { name: "HEADING", icon: "👾", code: "<...? > Judul Utama Besar </h1>", ans: "<h1>" },
+        { name: "LINE-BREAK", icon: "🪰", code: "Pindah baris baru: <...?>", ans: "br" },
+        { name: "LINK-HREF", icon: "🐜", code: "<a ...?='index.html'> Beranda </a>", ans: "href" },
+        { name: "IMAGE-SRC", icon: "🦋", code: "<...? src='foto.png' alt='Profil'>", ans: "img" },
+        { name: "IMAGE-ALT", icon: "🐝", code: "<img src='logo.png' ...?='Deskripsi Gambar'>", ans: "alt" },
+        { name: "LINK-TARGET", icon: "🐞", code: "<a href='url' ...?='_blank'> Tab Baru </a>", ans: "target" },
+        { name: "HORIZONTAL-LINE", icon: "橫", code: "Garis pembatas horizontal: <...?>", ans: "hr" },
+        { name: "LIST-UL", icon: "🦂", code: "<...? > <li>Item Bullet</li> </ul>", ans: "<ul>" },
+        { name: "LIST-OL", icon: "🪲", code: "<ol> <...? >Item Angka</li> </ol>", ans: "<li>" },
+        { name: "TABLE-ROW", icon: "🐌", code: "<table> <...? > <td>Data</td> </tr> </table>", ans: "<tr>" },
+        { name: "TABLE-DATA", icon: "🐛", code: "<tr> <...? >Isi Kolom</td> </tr>", ans: "<td>" },
+        { name: "TABLE-HEAD", icon: "🐾", code: "<thead> <tr> <...? >Judul Kolom</th> </tr> </thead>", ans: "<th>" },
+        { name: "INPUT-TEXT", icon: "🤖", code: "<input ...?='text' placeholder='Nama'>", ans: "type" },
+        { name: "BUTTON", icon: "💥", code: "<...? type='submit'> Kirim </button>", ans: "button" },
+        { name: "FORM-TAG", icon: "📂", code: "<form action='save.php' ...?='POST'>", ans: "method" },
+        { name: "TEXTAREA", icon: "📝", code: "<textarea>Isi komentar... ...? >", ans: "</textarea>" },
+        { name: "HTML-ROOT", icon: "👑", code: "<html lang='id'> ... Struktur Web ... ...? >", ans: "</html>" },
+        { name: "HEAD-SECTION", icon: "🧠", code: "<head> <...? >Judul Tab Dokumen</title> </head>", ans: "<title>" },
+        { name: "CHARSET", icon: "𔤤", code: "<meta ...?='UTF-8'>", ans: "charset" },
+        { name: "STRONG-TEXT", icon: "🦾", code: "<strong> Penting ...? >", ans: "</strong>" },
+        { name: "UNDERLINE", icon: "✏️", code: "<u> Teks Bergaris Bawah ...? >", ans: "</u>" },
+        { name: "SPAN-TAG", icon: "⛓️", code: "<...? style='color:red'> Teks </span >", ans: "span" },
+        { name: "DIV-TAG", icon: "📦", code: "<div class='box'> Konten ...? >", ans: "</div>" },
+        { name: "AUDIO-TAG", icon: "🎵", code: "<audio ...? > <source src='song.mp3'> </audio>", ans: "controls" },
+        { name: "IFRAME", icon: "🖼️", code: "<...? src='map_url.html' width='300'></iframe >", ans: "iframe" },
+        { name: "SELECT-OPTION", icon: "🔽", code: "<select> <...? value='1'>Pilihan 1</option> </select>", ans: "<option>" },
+        { name: "BLOCKQUOTE", icon: "💬", code: "<blockquote cite='url'> Kutipan ...? >", ans: "</blockquote>" },
+      ];
+
+      let deckSoalAktif = [];
+      let currentMode = "solo";
+      let playerName = "PLAYER";
+      let oppName = "ENEMY";
+      let peer = null;
+      let conn = null;
+      let gameLoop = null;
+
+      let myData = { hp: 100, score: 0, currentAnswer: "" };
+      let oppData = { hp: 100, score: 0 };
+      let soalTerjawab = 0;
+      let isDead = false;
+      let waktuMulai = 0;
+
+      let audioCtx = null;
+      let bgmNode = null;
+      let isAudioEnabled = false;
+
+      function toggleAudioMaster() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (!isAudioEnabled) {
+          isAudioEnabled = true;
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          document.getElementById("audio-toggle-btn").innerText = "🔊 AUDIO: ON";
+          document.getElementById("audio-toggle-btn").style.borderColor = "#39ff14";
+          document.getElementById("audio-toggle-btn").style.color = "#39ff14";
+          if (!document.getElementById("game-screen").classList.contains("hidden")) startBGM();
+        } else {
+          isAudioEnabled = false;
+          document.getElementById("audio-toggle-btn").innerText = "🔇 AUDIO: MUTED";
+          document.getElementById("audio-toggle-btn").style.borderColor = "#ff007f";
+          document.getElementById("audio-toggle-btn").style.color = "#ff007f";
+          stopBGM();
+        }
+      }
+
+      function playLaserSound() {
+        if (!isAudioEnabled || !audioCtx) return;
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1600, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      }
+
+      function playExplosionSound() {
+        if (!isAudioEnabled || !audioCtx) return;
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(20, audioCtx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.6);
+      }
+
+      function startBGM() {
+        if (!isAudioEnabled || !audioCtx) return;
+        if (bgmNode) stopBGM();
+        const sampleRate = audioCtx.sampleRate;
+        const duration = 2.0;
+        const numSamples = sampleRate * duration;
+        const buffer = audioCtx.createBuffer(1, numSamples, sampleRate);
+        const data = buffer.getChannelData(0);
+        let notes = [110, 110, 130, 110, 146, 110, 130, 164];
+        for (let i = 0; i < numSamples; i++) {
+          let t = i / sampleRate;
+          let noteIndex = Math.floor(t * 4) % notes.length;
+          let freq = notes[noteIndex];
+          let sample = Math.abs((((i * freq) / sampleRate) % 1) - 0.5) * 4 - 1;
+          let pulse = 1.0 - ((t * 4) % 1);
+          data[i] = sample * pulse * 0.03;
+        }
+        bgmNode = audioCtx.createBufferSource();
+        bgmNode.buffer = buffer;
+        bgmNode.loop = true;
+        bgmNode.connect(audioCtx.destination);
+        bgmNode.start();
+      }
+
+      function stopBGM() {
+        if (bgmNode) {
+          try {
+            bgmNode.stop();
+          } catch (e) {}
+          bgmNode = null;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderHistory();
+        let localName = localStorage.getItem("savedCyberName");
+        if (localName) {
+          document.getElementById("player-name-input").value = localName;
+        }
+      });
+
+      function submitName() {
+        let input = document.getElementById("player-name-input").value.trim();
+        if (!input) return alert("Nama tidak boleh kosong!");
+        playerName = input.toUpperCase();
+        localStorage.setItem("savedCyberName", playerName);
+        document.getElementById("display-profile-name").innerText = playerName;
+        document.getElementById("name-screen").classList.add("hidden");
+        document.getElementById("main-menu").removeAttribute("class");
+      }
+
+      function changeName() {
+        document.getElementById("main-menu").classList.add("hidden");
+        document.getElementById("name-screen").classList.remove("hidden");
+      }
+
+      function selectMode(mode) {
+        currentMode = mode;
+        document.getElementById("main-menu").classList.add("hidden");
+        if (mode === "solo") {
+          document.getElementById("opp-status-panel").classList.add("hidden");
+          document.getElementById("label-user-hp").innerText = playerName;
+          startSoloGame();
+        } else {
+          document.getElementById("opp-status-panel").classList.remove("hidden");
+          document.getElementById("label-user-hp").innerText = playerName;
+          document.getElementById("label-opp-name").innerText = `🔵 MENCARI MUSUH...`;
+          document.getElementById("multi-setup-screen").classList.remove("hidden");
+          initPeerJS();
+        }
+      }
+
+      function backToMenu() {
+        document.getElementById("multi-setup-screen").classList.add("hidden");
+        document.getElementById("main-menu").classList.remove("hidden");
+      }
+
+      function initPeerJS() {
+        if (peer) return;
+        const nomorAcak = Math.floor(100 + Math.random() * 900);
+        peer = new Peer("BUG-" + nomorAcak);
+        peer.on("open", (id) => {
+          document.getElementById("my-id").innerText = id;
+        });
+        peer.on("connection", (connection) => {
+          conn = connection;
+          setupMultiplayerReceiver();
+          setTimeout(() => {
+            conn.send({ type: "handshake", name: playerName });
+          }, 500);
+          startBattleGame();
+        });
+      }
+
+      function connectToPeer() {
+        let targetId = document.getElementById("peer-id-input").value.trim().toUpperCase();
+        if (!targetId) return alert("Masukkan ID temanmu!");
+        conn = peer.connect(targetId);
+        setupMultiplayerReceiver();
+        document.getElementById("multi-setup-screen").classList.add("hidden");
+        document.getElementById("waiting-screen").classList.remove("hidden");
+        conn.on("open", () => {
+          conn.send({ type: "handshake", name: playerName });
+          startBattleGame();
+        });
+      }
+
+      function startSoloGame() {
+        document.getElementById("game-screen").classList.remove("hidden");
+        document.getElementById("gun-input").focus();
+        resetState();
+        buatDanKocokDeck();
+        spawnBugQueue();
+        startBGM();
+
+        waktuMulai = Date.now();
+        document.getElementById("game-timer").innerText = `30s`;
+
+        gameLoop = setInterval(() => {
+          if (isDead) return;
+          myData.hp -= 1.66;
+
+          if (myData.hp <= 0) {
+            myData.hp = 0;
+            isDead = true;
+            document.getElementById("game-timer").innerText = `0s`;
+            document.getElementById("my-hp").style.width = "0%";
+            setTimeout(() => {
+              alert(`💀 GAME OVER - WAKTU HABIS!\n\nJawaban kode terakhir yang benar adalah: ${myData.currentAnswer}`);
+              endGame("DIAL-OUT");
+            }, 50);
+          } else {
+            let sisaDetik = Math.ceil(myData.hp / 3.33);
+            document.getElementById("game-timer").innerText = `${sisaDetik}s`;
+          }
+          document.getElementById("my-hp").style.width = myData.hp + "%";
+        }, 500);
+      }
+
+      function startBattleGame() {
+        document.getElementById("waiting-screen").classList.add("hidden");
+        document.getElementById("game-screen").classList.remove("hidden");
+        document.getElementById("gun-input").focus();
+        resetState();
+        buatDanKocokDeck();
+        spawnBugQueue();
+        startBGM();
+
+        waktuMulai = Date.now();
+        document.getElementById("game-timer").innerText = `40s`;
+
+        gameLoop = setInterval(() => {
+          if (isDead) return;
+          myData.hp -= 1.25;
+
+          if (myData.hp <= 0) {
+            myData.hp = 0;
+            isDead = true;
+            document.getElementById("game-timer").innerText = `0s`;
+            document.getElementById("my-hp").style.width = "0%";
+            conn.send({ type: "gameover", result: "lose" });
+            setTimeout(() => {
+              alert(`💀 GAME OVER - WAKTU HABIS!\n\nJawaban kode terakhir yang benar adalah: ${myData.currentAnswer}`);
+              endGame("LOSE");
+            }, 50);
+          } else {
+            let sisaDetik = Math.ceil(myData.hp / 2.5);
+            document.getElementById("game-timer").innerText = `${sisaDetik}s`;
+          }
+          document.getElementById("my-hp").style.width = myData.hp + "%";
+          conn.send({ type: "update", hp: myData.hp, score: myData.score });
+        }, 500);
+      }
+
+      function triggerSurrender() {
+        if (isDead) return;
+        if (confirm("Apakah kamu yakin ingin menyerah dari simulasi ini?")) {
+          isDead = true;
+          myData.hp = 0;
+          document.getElementById("my-hp").style.width = "0%";
+          document.getElementById("game-timer").innerText = `0s`;
+
+          if (currentMode === "multiplayer" && conn) {
+            conn.send({ type: "gameover", result: "lose" });
+            endGame("LOSE");
+          } else {
+            endGame("DIAL-OUT");
+          }
+        }
+      }
+
+      function setupMultiplayerReceiver() {
+        conn.on("data", (data) => {
+          if (data.type === "handshake") {
+            oppName = data.name.toUpperCase();
+            document.getElementById("label-opp-name").innerText = `🔵 ${oppName} (LAWAN)`;
+          }
+          if (data.type === "update") {
+            oppData.hp = data.hp;
+            oppData.score = data.score;
+            document.getElementById("opp-hp").style.width = oppData.hp + "%";
+            document.getElementById("opp-score").innerText = `BOUNTY: $${oppData.score}`;
+          }
+          if (data.type === "gameover") {
+            isDead = true;
+            endGame(data.result === "lose" ? "WIN" : "LOSE");
+          }
+        });
+      }
+
+      function buatDanKocokDeck() {
+        deckSoalAktif = [...masterAmunisi];
+        for (let i = deckSoalAktif.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [deckSoalAktif[i], deckSoalAktif[j]] = [deckSoalAktif[j], deckSoalAktif[i]];
+        }
+      }
+
+      function resetState() {
+        myData = { hp: 100, score: 0, currentAnswer: "" };
+        oppData = { hp: 100, score: 0 };
+        soalTerjawab = 0;
+        isDead = false;
+        document.getElementById("my-hp").style.width = "100%";
+        document.getElementById("opp-hp").style.width = "100%";
+        document.getElementById("my-score").innerText = "$0";
+        document.getElementById("opp-score").innerText = "BOUNTY: $0";
+        document.getElementById("game-progress").innerText = "0/30";
+        document.getElementById("game-timer").innerText = "--s";
+        document.getElementById("gun-input").value = "";
+        document.getElementById("feedback-line").innerText = "";
+      }
+
+      document.getElementById("gun-input").addEventListener("input", function () {
+        if (isDead) return;
+
+        let inputVal = this.value;
+        let targetAns = myData.currentAnswer;
+
+        if (inputVal.length === 0) return;
+
+        // KETIKA JAWABAN SALAH (Panjang karakter melebihi dan tidak cocok)
+        if (inputVal.length >= targetAns.length && inputVal !== targetAns) {
+          document.getElementById("feedback-line").innerText = `❌ TIDAK AKURAT! ULANGI LAGI...`;
+          myData.hp = Math.max(0, myData.hp - 8);
+          this.value = ""; // Dikosongkan agar bisa mencoba menebak lagi
+          return;
+        }
+
+        // KETIKA JAWABAN BENAR
+        if (inputVal === targetAns) {
+          playLaserSound();
+          document.getElementById("feedback-line").innerText = "";
+          myData.score += 150;
+          soalTerjawab++;
+
+          document.getElementById("game-progress").innerText = `${soalTerjawab}/30`;
+          myData.hp = Math.min(100, myData.hp + 25);
+
+          let sisaDetikInstant = currentMode === "solo" ? Math.ceil(myData.hp / 3.33) : Math.ceil(myData.hp / 2.5);
+          document.getElementById("game-timer").innerText = `${sisaDetikInstant}s`;
+
+          document.getElementById("my-score").innerText = `$${myData.score}`;
+          this.value = "";
+
+          if (currentMode === "multiplayer" && conn) {
+            conn.send({ type: "update", hp: myData.hp, score: myData.score });
+          }
+
+          if (soalTerjawab >= 30) {
+            isDead = true;
+            if (currentMode === "multiplayer" && conn) {
+              conn.send({ type: "gameover", result: "win" });
+            }
+            endGame("WIN");
+            return;
+          }
+
+          spawnBugQueue();
+        }
+      });
+
+      function spawnBugQueue() {
+        const bug = deckSoalAktif[soalTerjawab];
+        myData.currentAnswer = bug.ans;
+        document.getElementById("bug-name").innerText = `${bug.name}.EXE`;
+        document.getElementById("bug-sprite").innerText = bug.icon;
+        document.getElementById("code-target").innerText = bug.code;
+      }
+
+      function endGame(hasil) {
+        stopBGM();
+        playExplosionSound();
+        clearInterval(gameLoop);
+
+        let waktuSelesi = Date.now();
+        let totalDetik = Math.floor((waktuSelesi - waktuMulai) / 1000);
+        let menit = Math.floor(totalDetik / 60);
+        let detik = totalDetik % 60;
+        let stringDurasi = `${menit}m ${detik}s`;
+
+        document.getElementById("game-screen").classList.add("hidden");
+        document.getElementById("main-menu").classList.remove("hidden");
+
+        if (currentMode === "solo") {
+          if (hasil === "WIN") {
+            alert(`🏆 LUAR BIASA! Seluruh 30 Bug Berhasil Diclear!\nSkor Akhir ${playerName}: $${myData.score}\nDurasi: ${stringDurasi}`);
+          } else {
+            alert(`🎮 SIMULASI SELESAI!\nSkor Akhir ${playerName}: $${myData.score}\nDurasi: ${stringDurasi}`);
+          }
+        } else {
+          alert(hasil === "WIN" ? `👑 KAMU MENANG TELAK LAWAN ${oppName}!` : `💀 KAMU KALAH CEPAT DARI ${oppName}!`);
+        }
+
+        let history = JSON.parse(localStorage.getItem("allBugScoresName")) || [];
+        history.push({ name: playerName, mode: currentMode.toUpperCase(), score: myData.score, duration: stringDurasi, res: hasil });
+        history.sort((a, b) => b.score - a.score);
+        localStorage.setItem("allBugScoresName", JSON.stringify(history));
+        renderHistory();
+      }
+
+      function renderHistory() {
+        let history = JSON.parse(localStorage.getItem("allBugScoresName")) || [];
+        const tbody = document.getElementById("history-box");
+        tbody.innerHTML = "";
+        if (history.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="color:#223154">Belum ada log pertempuran</td></tr>`;
+          return;
+        }
+        history.forEach((h) => {
+          let displayRes = h.res;
+          let color = "#fff";
+          if (h.res === "WIN") color = "#39ff14";
+          if (h.res === "LOSE") color = "#ff007f";
+          if (h.res === "DIAL-OUT") displayRes = "DONE";
+
+          let displayDuration = h.duration ? h.duration : "--";
+
+          tbody.innerHTML += `<tr>
+                    <td style="color:#00f3ff">${h.name}</td>
+                    <td>${h.mode}</td>
+                    <td>$${h.score}</td>
+                    <td style="color:#ffcc00">${displayDuration}</td>
+                    <td style="color:${color}; font-weight:bold">${displayRes}</td>
+                </tr>`;
+        });
+      }
+
+      function resetLocalHistory() {
+        if (confirm("Apakah kamu yakin ingin menghapus seluruh rekor skor di perangkat ini?")) {
+          localStorage.removeItem("allBugScoresName");
+          renderHistory();
+        }
+      }
+    </script>
+  </body>
+</html>

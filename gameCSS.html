@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Space Odyssey: Navigasi Kontrol Internal</title>
+    <style>
+      /* --- TEMA UTAMA: LIGHT MODE (PUTIH) --- */
+      body {
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f3f4f6; /* Latar belakang putih keabu-abuan bersih */
+        color: #1f2937; /* Teks utama gelap agar kontras */
+        margin: 0;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        color: #d97706; /* Emas gelap yang ramah di latar putih */
+        margin-bottom: 5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        font-size: 1.8rem;
+        text-align: center;
+      }
+      .subtitle {
+        color: #4b5563; /* Teks sekunder abu-abu gelap */
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        max-width: 600px;
+      }
+
+      /* --- HALAMAN LOGIN INSTAN --- */
+      #auth-container {
+        width: 100%;
+        max-width: 400px;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        margin-top: 30px;
+        box-sizing: border-box;
+      }
+
+      .auth-box h2 {
+        text-align: center;
+        color: #059669;
+        margin-top: 0;
+        font-size: 1.4rem;
+      }
+      .form-group {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .form-group label {
+        font-size: 13px;
+        margin-bottom: 8px;
+        color: #4b5563;
+        text-align: center;
+      }
+      .form-group input {
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        background-color: #f9fafb;
+        color: #111827;
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 1px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #10b981;
+        background-color: #fff;
+      }
+
+      .auth-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #10b981;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+      .auth-btn:hover {
+        background-color: #059669;
+      }
+
+      .auth-home-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .auth-home-btn:hover {
+        background-color: #e5e7eb;
+        color: #111827;
+      }
+
+      /* --- DASHBOARD GAME UTAMA --- */
+      #game-container {
+        display: none;
+        gap: 20px;
+        max-width: 1000px;
+        width: 100%;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .game-side {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 460px;
+        box-sizing: border-box;
+      }
+
+      .user-bar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        box-sizing: border-box;
+      }
+      .user-info {
+        font-size: 13px;
+        font-weight: bold;
+        color: #0284c7;
+      }
+
+      /* --- AREA TETAP HITAM KANVAS RADAR --- */
+      #space-container {
+        width: 100%;
+        aspect-ratio: 460 / 360;
+        background: radial-gradient(circle, #1e1b4b 0%, #05030a 100%); /* Hitam Luar Angkasa */
+        border: 4px solid #1f2937;
+        border-radius: 12px;
+        position: relative;
+        margin-bottom: 20px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      #player-ship {
+        font-size: 2.5rem;
+        position: absolute;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+      #cat-target {
+        font-size: 2.5rem;
+        position: absolute;
+        animation: float 2.5s ease-in-out infinite;
+        z-index: 5;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      #control-panel {
+        width: 100%;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-sizing: border-box;
+      }
+      .level-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 8px;
+        gap: 8px;
+      }
+      #lvl-title {
+        font-weight: bold;
+        color: #059669;
+        font-size: 1rem;
+      }
+
+      .utility-btn {
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .utility-btn:hover {
+        background-color: #e5e7eb;
+      }
+      #hint-btn {
+        color: #d97706;
+        border-color: #f59e0b;
+        margin-left: auto;
+      }
+      #home-btn {
+        color: #0284c7;
+        border-color: #38bdf8;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* Wadah Hint Teori Baru */
+      #hint-box {
+        display: none;
+        background-color: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #78350f;
+        line-height: 1.5;
+      }
+
+      /* Area Editor Kode */
+      .drop-zone-container {
+        background-color: #f9fafb;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        color: #065f46;
+        margin-bottom: 15px;
+        border: 1px solid #e5e7eb;
+        font-size: 0.85rem;
+        overflow-x: auto;
+      }
+      .code-line {
+        margin: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .drop-box {
+        display: inline-block;
+        min-width: 90px;
+        height: 26px;
+        background-color: #ffffff;
+        border: 2px dashed #9ca3af;
+        border-radius: 4px;
+        text-align: center;
+        line-height: 26px;
+        color: #111827;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      /* Wadah Balok Seret Pilihan */
+      .blocks-container {
+        background-color: #f3f4f6;
+        padding: 10px;
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-height: 50px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 15px;
+      }
+      .block {
+        background-color: #0284c7;
+        color: #ffffff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: grab;
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+        font-size: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .block.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* Tombol Navigasi Kendali Utama */
+      .btn-group {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+      }
+      button.main-action {
+        padding: 12px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      #action-btn {
+        flex: 2;
+        background-color: #10b981;
+        color: white;
+      }
+      #action-btn:hover {
+        background-color: #059669;
+      }
+      #reset-btn {
+        flex: 1;
+        background-color: #6b7280;
+        color: white;
+      }
+      #reset-btn:hover {
+        background-color: #4b5563;
+      }
+      #stop-btn {
+        flex: 1;
+        background-color: #ef4444;
+        color: white;
+      }
+      #stop-btn:hover {
+        background-color: #dc2626;
+      }
+
+      #feedback {
+        margin-top: 12px;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: white;
+      }
+
+      /* Leaderboard Kartu */
+      .leaderboard-card {
+        width: 100%;
+        max-width: 460px;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-sizing: border-box;
+        height: fit-content;
+      }
+      .leaderboard-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #d97706;
+        margin-bottom: 15px;
+        text-align: center;
+        border-bottom: 2px solid #f3f4f6;
+        padding-bottom: 8px;
+      }
+      .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 10px 8px;
+        text-align: left;
+        font-size: 13px;
+        color: #1f2937;
+      }
+      .leaderboard-table th {
+        color: #4b5563;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .leaderboard-table tr:nth-child(even) {
+        background-color: #f9fafb;
+      }
+
+      /* --- RESPONSIVE MEDIA QUERIES TOTAL --- */
+      @media screen and (max-width: 768px) {
+        #game-container {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+
+      @media screen and (max-width: 400px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+        .user-bar {
+          font-size: 11px;
+        }
+        button.main-action {
+          font-size: 11px;
+          padding: 10px 5px;
+        }
+        #player-ship,
+        #cat-target {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Space Odyssey 🌌</h1>
+    <p class="subtitle">Analisis peta radar visual secara mandiri. Gunakan modul pustaka data jika buntu!</p>
+
+    <div id="auth-container">
+      <div class="auth-box">
+        <h2>Registrasi Radar</h2>
+        <div class="form-group">
+          <label>Masukkan Nama / Inisial Anda untuk Mendata Skor</label>
+          <input type="text" id="login-user" placeholder="Contoh: Alex99" maxlength="12" />
+        </div>
+        <button class="auth-btn" id="submit-login">MULAI PETUALANGAN 🚀</button>
+        <a href="index.html" class="auth-home-btn">🏠 KEMBALI KE BERANDA</a>
+      </div>
+    </div>
+
+    <div id="game-container">
+      <div class="game-side">
+        <div class="user-bar">
+          <div class="user-info">👩‍✈️ Pilot: <span id="active-username">User</span></div>
+          <div style="font-size: 12px; color: #4b5563">Misi: 30 Sektor</div>
+        </div>
+
+        <div id="space-container">
+          <div id="player-ship">🚀</div>
+          <div id="cat-target">🐱</div>
+        </div>
+
+        <div id="control-panel">
+          <div class="level-header">
+            <span id="lvl-title">Level 1/30</span>
+            <button class="utility-btn" id="hint-btn">💡 Modul Dokumen Teori</button>
+            <button class="utility-btn" id="home-btn">🏠 Beranda</button>
+          </div>
+          <p id="lvl-desc" style="font-size: 12px; color: #374151; margin-top: 5px; margin-bottom: 10px"></p>
+          <div id="hint-box"></div>
+
+          <div class="drop-zone-container">
+            <div id="selector-name">#space-container {</div>
+            <div id="code-structure"></div>
+            <div>}</div>
+          </div>
+
+          <div class="blocks-container" id="blocks-pool"></div>
+
+          <div class="btn-group">
+            <button id="stop-btn" class="main-action">🟥 STOP</button>
+            <button id="reset-btn" class="main-action">🔄 RESET</button>
+            <button id="action-btn" class="main-action">🚀 JALANKAN</button>
+          </div>
+          <div id="feedback"></div>
+        </div>
+      </div>
+
+      <div class="leaderboard-card">
+        <div class="leaderboard-title">🏆 KAPTEN TERBAIK</div>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th>Nama</th>
+              <th>Skor / Nilai</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      // --- DATA BASE ENGINE GENERATOR (30 LEVEL) ---
+      const levels = [];
+      const flexJustify = ["flex-start", "center", "flex-end", "space-between", "space-around"];
+      const flexAlign = ["flex-start", "center", "flex-end"];
+
+      const flexMapX = { "flex-start": "5%", center: "45%", "flex-end": "85%", "space-between": "85%", "space-around": "75%" };
+      const flexMapY = { "flex-start": "5%", center: "42%", "flex-end": "80%" };
+
+      // 10 Level Flexbox
+      for (let i = 1; i <= 10; i++) {
+        let jVal = flexJustify[i % flexJustify.length];
+        let aVal = flexAlign[Math.floor((i - 1) / 4) % flexAlign.length];
+
+        let hintTeks = `
+                <p style="margin-top:0; font-weight:bold; color:#9a3412; border-bottom:1px solid #fbd38d; padding-bottom:4px;">📖 MODUL PUSTAKA FLEXBOX (SEKTOR 1-10)</p>
+                <ul style="margin:0; padding-left:15px; list-style-type: disc;">
+                    <li style="margin-bottom:8px;"><strong>display:</strong> Mengaktifkan tata letak fleksibel (Gunakan balok <code style="background:#ffedd5; padding:2px 4px; border-radius:3px;">flex</code>).</li>
+                    <li style="margin-bottom:8px;"><strong>justify-content:</strong> Mengatur posisi objek secara <strong>Horisontal</strong> (Sumbu Utama):
+                        <ul style="padding-left:15px; margin-top:4px; list-style-type: circle;">
+                            <li><code style="color:#b45309;">'flex-start'</code> : Merapat ke sisi <strong>KIRI</strong> radar.</li>
+                            <li><code style="color:#b45309;">'center'</code> : Tepat di <strong>TENGAH</strong> horisontal.</li>
+                            <li><code style="color:#b45309;">'flex-end'</code> : Merapat ke sisi <strong>KANAN</strong> radar.</li>
+                            <li><code style="color:#b45309;">'space-between'</code> : Menyebar rata hingga ujung kiri & kanan.</li>
+                            <li><code style="color:#b45309;">'space-around'</code> : Menyebar dengan ruang kosong di sekitarnya.</li>
+                        </ul>
+                    </li>
+                    <li><strong>align-items:</strong> Mengatur posisi objek secara <strong>Vertikal</strong> (Sumbu Silang):
+                        <ul style="padding-left:15px; margin-top:4px; list-style-type: circle;">
+                            <li><code style="color:#b45309;">'flex-start'</code> : Menuju ke area <strong>ATAS</strong> radar.</li>
+                            <li><code style="color:#b45309;">'center'</code> : Tepat di <strong>TENGAH</strong> vertikal.</li>
+                            <li><code style="color:#b45309;">'flex-end'</code> : Menuju ke area <strong>BAWAH</strong> radar.</li>
+                        </ul>
+                    </li>
+                </ul>
+            `;
+
+        levels.push({
+          id: i,
+          type: "flex",
+          title: `Sektor ${i}: Formasi Flexbox`,
+          desc: `Periksa letak kucing target di peta radar dan sesuaikan properti Flexbox induk!`,
+          hint: hintTeks,
+          catPos: { left: flexMapX[jVal], top: flexMapY[aVal], bottom: "auto", right: "auto" },
+          structure: `
+                    <div class="code-line">&nbsp;&nbsp;display: <div class="drop-box" data-ans="flex"></div>;</div>
+                    <div class="code-line">&nbsp;&nbsp;justify-content: <div class="drop-box" data-ans="${jVal}"></div>;</div>
+                    <div class="code-line">&nbsp;&nbsp;align-items: <div class="drop-box" data-ans="${aVal}"></div>;</div>
+                `,
+          blocks: ["flex", "block", "grid", jVal, aVal, "center", "flex-end"].sort(() => Math.random() - 0.5),
+          apply: (container, ship) => {
+            container.style.display = "flex";
+            container.style.justifyContent = jVal;
+            container.style.alignItems = aVal;
+            ship.style.position = "static";
+          },
+        });
+      }
+
+      // 10 Level Grid
+      for (let i = 11; i <= 20; i++) {
+        let col = (i % 4) + 1;
+        let row = Math.floor((i - 11) / 4) + 1;
+
+        let hintTeks = `
+                <p style="margin-top:0; font-weight:bold; color:#9a3412; border-bottom:1px solid #fbd38d; padding-bottom:4px;">📖 MODUL PUSTAKA CSS GRID (SEKTOR 11-20)</p>
+                <p style="margin:8px 0; font-size:11.5px; font-style:italic; color:#78350f;">Radar saat ini menggunakan matriks catur: <strong>4 Kolom × 3 Baris</strong>.</p>
+                <ul style="margin:0; padding-left:15px; list-style-type: disc;">
+                    <li style="margin-bottom:8px;"><strong>grid-column:</strong> Menentukan posisi kolom pesawat Anda.
+                        <br><span style="color:#6b7280;">• Kisaran nilai: Angka <strong>1</strong> (Paling Kiri) sampai <strong>4</strong> (Paling Kanan).</span>
+                    </li>
+                    <li><strong>grid-row:</strong> Menentukan posisi baris pesawat Anda.
+                        <br><span style="color:#6b7280;">• Kisaran nilai: Angka <strong>1</strong> (Paling Atas) sampai <strong>3</strong> (Paling Bawah).</span>
+                    </li>
+                </ul>
+            `;
+
+        levels.push({
+          id: i,
+          type: "grid",
+          title: `Sektor ${i}: Koordinat Grid`,
+          desc: `Radar luar angkasa terkunci dalam mode kisi grid statis. Analisis koordinat lokasi kotak sel target!`,
+          hint: hintTeks,
+          catPos: { left: `${(col - 1) * 25 + 5}%`, top: `${(row - 1) * 30 + 5}%`, bottom: "auto", right: "auto" },
+          structure: `
+                    <div class="code-line">/* Diaplikasikan pada #player-ship */</div>
+                    <div class="code-line">&nbsp;&nbsp;grid-column: <div class="drop-box" data-ans="${col}"></div>;</div>
+                    <div class="code-line">&nbsp;&nbsp;grid-row: <div class="drop-box" data-ans="${row}"></div>;</div>
+                `,
+          blocks: [col.toString(), row.toString(), "1", "2", "3", "4", "span 2"].sort(() => Math.random() - 0.5),
+          apply: (container, ship) => {
+            container.style.display = "grid";
+            container.style.gridTemplateColumns = "repeat(4, 1fr)";
+            container.style.gridTemplateRows = "repeat(3, 1fr)";
+            ship.style.position = "static";
+            ship.style.gridColumn = col.toString();
+            ship.style.gridRow = row.toString();
+          },
+        });
+      }
+
+      // 10 Level Absolute
+      const dists = ["10%", "35%", "65%", "20%"];
+      for (let i = 21; i <= 30; i++) {
+        let eY = i % 2 === 0 ? "top" : "bottom";
+        let eX = i % 3 === 0 ? "left" : "right";
+        let dY = dists[i % dists.length];
+        let dX = dists[(i + 1) % dists.length];
+        let cPos = { top: "auto", bottom: "auto", left: "auto", right: "auto" };
+        cPos[eY] = dY;
+        cPos[eX] = dX;
+
+        let hintTeks = `
+                <p style="margin-top:0; font-weight:bold; color:#9a3412; border-bottom:1px solid #fbd38d; padding-bottom:4px;">📖 MODUL PUSTAKA ABSOLUTE POSITION (SEKTOR 21-30)</p>
+                <ul style="margin:0; padding-left:15px; list-style-type: disc;">
+                    <li style="margin-bottom:8px;"><strong>position:</strong> Keluar dari aliran normal dokumen (Gunakan balok <code style="background:#ffedd5; padding:2px 4px; border-radius:3px;">absolute</code>).</li>
+                    <li><strong>top / bottom / left / right:</strong> Properti jangkar untuk mengunci jarak mundur objek langsung dari dinding batas bingkai radar.</li>
+                </ul>
+            `;
+
+        levels.push({
+          id: i,
+          type: "absolute",
+          title: `Sektor ${i}: Navigasi Manual`,
+          desc: `Sektor anomali terdeteksi. Perhatikan instruksi jangkar properti jarak sisi kontainer!`,
+          hint: hintTeks,
+          catPos: cPos,
+          structure: `
+                    <div class="code-line">/* Diaplikasikan pada #player-ship */</div>
+                    <div class="code-line">&nbsp;&nbsp;position: <div class="drop-box" data-ans="absolute"></div>;</div>
+                    <div class="code-line">&nbsp;&nbsp;${eY}: <div class="drop-box" data-ans="${dY}"></div>;</div>
+                    <div class="code-line">&nbsp;&nbsp;${eX}: <div class="drop-box" data-ans="${dX}"></div>;</div>
+                `,
+          blocks: ["absolute", "relative", dY, dX, eY, eX, "0%"].sort(() => Math.random() - 0.5),
+          apply: (container, ship) => {
+            container.style.display = "block";
+            ship.style.position = "absolute";
+            ship.style.top = "auto";
+            ship.style.bottom = "auto";
+            ship.style.left = "auto";
+            ship.style.right = "auto";
+            ship.style[eY] = dY;
+            ship.style[eX] = dX;
+          },
+        });
+      }
+
+      // --- SISTEM MANAGEMENT UTAMA ---
+      let currentUser = null;
+      let currentLevelIdx = 0;
+      let draggedItem = null;
+      let startTime = null;
+      let isGameStopped = false;
+
+      const authContainer = document.getElementById("auth-container");
+      const gameContainer = document.getElementById("game-container");
+      const activeUserTxt = document.getElementById("active-username");
+
+      document.getElementById("submit-login").addEventListener("click", () => {
+        const usernameInput = document.getElementById("login-user").value.trim();
+        if (!usernameInput) {
+          alert("Harap masukkan nama Anda terlebih dahulu!");
+          return;
+        }
+        currentUser = usernameInput;
+        launchGameSimulator();
+      });
+
+      document.getElementById("login-user").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") document.getElementById("submit-login").click();
+      });
+
+      // --- HANDLER TOMBOL STOP (MENYERAH + MEMUNCULKAN HINT JAWABAN BENAR) ---
+      document.getElementById("stop-btn").addEventListener("click", () => {
+        if (isGameStopped) return;
+
+        const levelSelesai = currentLevelIdx;
+        const nilaiSeadanya = Math.round((levelSelesai / 30) * 100);
+
+        if (confirm(`Misi dihentikan manual!\n\nProgres terakhir Anda:\n• Sektor Terlampaui: ${levelSelesai}/30\n• Nilai Sementara: ${nilaiSeadanya}/100\n\nSimpan skor ke papan peringkat dan lihat hasilnya?`)) {
+          let scores = JSON.parse(localStorage.getItem("css_space_leaderboard")) || [];
+          scores.push({ name: `${currentUser} (Stopped)`, scoreDisplay: `Lvl ${levelSelesai} (${nilaiSeadanya} Pts)`, rawScore: nilaiSeadanya });
+          scores.sort((a, b) => b.rawScore - a.rawScore);
+          localStorage.setItem("css_space_leaderboard", JSON.stringify(scores.slice(0, 10)));
+
+          renderLeaderboard();
+
+          isGameStopped = true;
+
+          // AMBIL DATA JAWABAN BENAR DARI LEVEL SAAT INI
+          let jawabanBenarTeks = "";
+          document.querySelectorAll(".drop-box").forEach((box, index) => {
+            let keyProperti = box.parentElement.innerText.split(":")[0].trim();
+            let valueJawaban = box.getAttribute("data-ans");
+            jawabanBenarTeks += `<br>• <b>${keyProperti}</b>: <span style="color:#a7f3d0">${valueJawaban}</span>`;
+          });
+
+          feedback.innerHTML = `🟥 MISI DIHENTIKAN! Skor Tersimpan: ${nilaiSeadanya} Poin.<br><br>💡 <b>KUNCI JAWABAN SEKTOR INI:</b>${jawabanBenarTeks}`;
+          feedback.style.backgroundColor = "#7c2d12";
+          feedback.style.display = "block";
+
+          document.querySelectorAll(".drop-box").forEach((box) => (box.style.pointerEvents = "none"));
+          document.querySelectorAll(".block").forEach((b) => {
+            b.setAttribute("draggable", "false");
+            b.classList.add("disabled");
+          });
+
+          actionBtn.innerText = "🔄 RE-START MISI";
+          resetBtn.style.display = "none";
+          document.getElementById("stop-btn").style.opacity = "0.5";
+        }
+      });
+
+      // --- GAME INTERACTIVE CONTROLLER ---
+      const spaceContainer = document.getElementById("space-container");
+      const ship = document.getElementById("player-ship");
+      const cat = document.getElementById("cat-target");
+      const lvlTitle = document.getElementById("lvl-title");
+      const lvlDesc = document.getElementById("lvl-desc");
+      const hintBox = document.getElementById("hint-box");
+      const hintBtn = document.getElementById("hint-btn");
+      const homeBtn = document.getElementById("home-btn");
+      const codeStructure = document.getElementById("code-structure");
+      const blocksPool = document.getElementById("blocks-pool");
+      const actionBtn = document.getElementById("action-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const feedback = document.getElementById("feedback");
+      const selectorName = document.getElementById("selector-name");
+
+      function launchGameSimulator() {
+        authContainer.style.display = "none";
+        gameContainer.style.display = "flex";
+        activeUserTxt.innerText = currentUser;
+        currentLevelIdx = 0;
+        isGameStopped = false;
+        resetBtn.style.display = "block";
+        document.getElementById("stop-btn").style.opacity = "1";
+        startTime = Date.now();
+        loadLevel();
+        renderLeaderboard();
+      }
+
+      function loadLevel() {
+        const lvl = levels[currentLevelIdx];
+        lvlTitle.innerText = `${lvl.title} (${lvl.id}/30)`;
+        lvlDesc.innerText = lvl.desc;
+        hintBox.innerHTML = lvl.hint;
+        hintBox.style.display = "none";
+        feedback.style.display = "none";
+        actionBtn.innerText = "🚀 JALANKAN PESAWAT";
+        selectorName.innerText = lvl.type === "flex" ? "#space-container {" : "#player-ship {";
+
+        spaceContainer.style = "";
+        ship.style = "";
+        cat.style = "";
+        Object.assign(cat.style, lvl.catPos);
+
+        codeStructure.innerHTML = lvl.structure;
+        blocksPool.innerHTML = "";
+        lvl.blocks.forEach((text) => {
+          const b = document.createElement("div");
+          b.className = "block";
+          b.innerText = text;
+          b.setAttribute("draggable", "true");
+
+          b.addEventListener("dragstart", () => {
+            if (!isGameStopped) draggedItem = b;
+          });
+          b.addEventListener(
+            "touchstart",
+            () => {
+              if (!isGameStopped) draggedItem = b;
+            },
+            { passive: true },
+          );
+
+          blocksPool.appendChild(b);
+        });
+        bindDragDropEvents();
+      }
+
+      function bindDragDropEvents() {
+        document.querySelectorAll(".drop-box").forEach((box) => {
+          box.addEventListener("dragover", (e) => e.preventDefault());
+          box.addEventListener("drop", () => {
+            if (draggedItem && !isGameStopped) {
+              box.innerText = draggedItem.innerText;
+              box.style.borderColor = "#0284c7";
+            }
+          });
+
+          box.addEventListener("click", () => {
+            if (!isGameStopped) {
+              if (draggedItem) {
+                box.innerText = draggedItem.innerText;
+                box.style.borderColor = "#0284c7";
+                draggedItem = null;
+              } else {
+                box.innerText = "";
+                box.style.borderColor = "#9ca3af";
+              }
+            }
+          });
+        });
+
+        document.querySelectorAll(".block").forEach((b) => {
+          b.addEventListener("click", () => {
+            if (!isGameStopped) draggedItem = b;
+            b.style.outline = "2px solid #0284c7";
+            setTimeout(() => (b.style.outline = "none"), 1000);
+          });
+        });
+      }
+
+      hintBtn.addEventListener("click", () => {
+        hintBox.style.display = hintBox.style.display === "none" ? "block" : "none";
+      });
+
+      homeBtn.addEventListener("click", () => {
+        if (confirm("Apakah Anda ingin keluar dari permainan saat ini dan kembali ke menu registrasi awal? Progres yang tidak disimpan akan hilang.")) {
+          gameContainer.style.display = "none";
+          authContainer.style.display = "block";
+          document.getElementById("login-user").value = "";
+          currentUser = null;
+          currentLevelIdx = 0;
+          isGameStopped = false;
+        }
+      });
+
+      // RESET BERFUNGSI MENGHAPUS LOCALSTORAGE PAPAN SKOR
+      resetBtn.addEventListener("click", () => {
+        if (confirm("Apakah Anda yakin ingin MENGHAPUS SELURUH SKOR dari papan peringkat? Tindakan ini akan mengosongkan leaderboard.")) {
+          localStorage.removeItem("css_space_leaderboard");
+          renderLeaderboard();
+          if (!isGameStopped) {
+            document.querySelectorAll(".drop-box").forEach((box) => {
+              box.innerText = "";
+              box.style.borderColor = "#9ca3af";
+            });
+            spaceContainer.style = "";
+            ship.style = "";
+            feedback.style.display = "none";
+          }
+        }
+      });
+
+      actionBtn.addEventListener("click", () => {
+        if (isGameStopped) {
+          launchGameSimulator();
+          return;
+        }
+
+        if (actionBtn.innerText.includes("BERIKUTNYA")) {
+          currentLevelIdx++;
+          if (currentLevelIdx < levels.length) {
+            loadLevel();
+          } else {
+            finishGame();
+          }
+          return;
+        }
+        let perfect = true;
+        document.querySelectorAll(".drop-box").forEach((box) => {
+          if (box.innerText !== box.getAttribute("data-ans")) perfect = false;
+        });
+
+        if (perfect) {
+          levels[currentLevelIdx].apply(spaceContainer, ship);
+          feedback.innerText = "🎉 VALID! Koordinat akurat!";
+          feedback.style.backgroundColor = "#047857";
+          feedback.style.display = "block";
+          actionBtn.innerText = "➡️ SEKTOR BERIKUTNYA";
+        } else {
+          feedback.innerText = "❌ ERROR: Kalkulasi salah!";
+          feedback.style.backgroundColor = "#b91c1c";
+          feedback.style.display = "block";
+        }
+      });
+
+      function finishGame() {
+        alert(`🏆 SUNGGUH SPEKTAKULER KAPTEN ${currentUser.toUpperCase()}!\nAnda menyelesaikan seluruh 30 Level misi dengan nilai sempurna 100 Pts.`);
+
+        let scores = JSON.parse(localStorage.getItem("css_space_leaderboard")) || [];
+        scores.push({ name: currentUser, scoreDisplay: "Lvl 30 (100 Pts)", rawScore: 100 });
+        scores.sort((a, b) => b.rawScore - a.rawScore);
+        localStorage.setItem("css_space_leaderboard", JSON.stringify(scores.slice(0, 10)));
+
+        renderLeaderboard();
+        currentLevelIdx = 0;
+        startTime = Date.now();
+        loadLevel();
+      }
+
+      function renderLeaderboard() {
+        let scores = JSON.parse(localStorage.getItem("css_space_leaderboard")) || [{ name: "", scoreDisplay: "", rawScore: 0 }];
+        const tbody = document.getElementById("leaderboard-body");
+        tbody.innerHTML = "";
+        scores.forEach((row, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${idx + 1}</td><td>${row.name}</td><td>${row.scoreDisplay}</td>`;
+          tbody.appendChild(tr);
+        });
+      }
+    </script>
+  </body>
+</html>

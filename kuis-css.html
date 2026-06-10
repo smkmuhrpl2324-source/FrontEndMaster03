@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="id" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuis Pemahaman CSS</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        /* Warna latar belakang diubah ke nuansa biru gelap untuk CSS */
+        background: radial-gradient(circle at center, #062044 0%, #020b1a 100%);
+        overflow-x: hidden;
+      }
+      .floating-logo {
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 15px rgba(38, 77, 228, 0.4));
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .reveal-card {
+        animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .option-btn {
+        transition: all 0.2s ease;
+        padding: 12px 16px !important;
+        font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.03);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        width: 100%;
+        text-align: left;
+      }
+      .option-btn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(5px);
+      }
+      .correct-answer {
+        background: #0ea5e9 !important; /* Warna biru untuk jawaban benar CSS */
+        color: white !important;
+        border-color: #0ea5e9 !important;
+      }
+      .wrong-answer {
+        background: #ef4444 !important;
+        color: white !important;
+        border-color: #ef4444 !important;
+      }
+      .glass-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        color: white;
+        width: 100%;
+        padding: 0.75rem 1.25rem;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+      }
+      .glass-input:focus {
+        border-color: #38bdf8;
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .result-card {
+        /* Gradien biru untuk hasil akhir CSS */
+        background: linear-gradient(135deg, #075985 0%, #0369a1 50%, #0ea5e9 100%);
+      }
+    </style>
+  </head>
+  <body class="h-full flex items-center justify-center p-4">
+    <div id="app" class="w-full max-w-lg">
+      <div id="screen-form" class="reveal-card">
+        <a href="index.html" class="inline-flex items-center gap-2 text-sky-400/60 hover:text-sky-400 transition-all text-sm font-semibold mb-6 group">
+          <i data-lucide="arrow-left" class="w-4 group-hover:-translate-x-1 transition-transform"></i>
+          Kembali ke Beranda
+        </a>
+
+        <div class="text-center mb-8">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-16 h-16 floating-logo mx-auto mb-4" alt="Logo CSS" />
+          <h1 class="text-3xl font-extrabold text-white mb-1">Kuis CSS</h1>
+          <p class="text-sky-300 italic">"Uji kemampuan styling dan layouting web kamu!"</p>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+          <form id="student-form" class="space-y-5">
+            <div>
+              <label class="block text-sky-300 text-xs font-bold uppercase mb-2 ml-1">Nama Lengkap</label>
+              <input type="text" id="nama" required placeholder="Masukkan namamu..." class="glass-input" />
+            </div>
+            <div>
+              <label class="block text-sky-300 text-xs font-bold uppercase mb-2 ml-1">Kelas</label>
+              <input type="text" id="kelas" required placeholder="Contoh: X-RPL 1" class="glass-input" />
+            </div>
+            <button type="submit" class="w-full py-4 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-900/40">
+              Mulai Kuis CSS <i data-lucide="play" class="w-5"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div id="screen-quiz" class="hidden reveal-card">
+        <div class="flex justify-between items-center mb-6">
+          <span id="q-counter" class="text-sky-300 font-bold text-sm bg-sky-900/30 px-4 py-1.5 rounded-full border border-sky-500/20">Soal 1/10</span>
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-white text-sm"><i data-lucide="clock" class="w-4 text-sky-400"></i> <span id="timer-text" class="font-mono">00:00</span></div>
+        </div>
+        <div id="question-card" class="bg-white/5 border border-white/10 rounded-3xl p-6 mb-5 backdrop-blur-sm">
+          <p id="q-text" class="text-white font-bold text-lg mb-6 leading-relaxed"></p>
+          <div id="q-options" class="space-y-3"></div>
+        </div>
+        <div id="explanation-box" class="hidden bg-white/5 border border-white/10 rounded-2xl p-5 mb-5 flex gap-4 items-start">
+          <div id="expl-icon" class="shrink-0 mt-1"></div>
+          <div>
+            <p id="expl-title" class="font-bold text-white mb-1"></p>
+            <p id="expl-text" class="text-sky-200/80 text-sm leading-relaxed"></p>
+          </div>
+        </div>
+        <button id="next-btn" class="hidden w-full py-4 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition-all flex items-center justify-center gap-2">
+          Soal Berikutnya <i data-lucide="arrow-right" class="w-5"></i>
+        </button>
+      </div>
+
+      <div id="screen-result" class="hidden reveal-card">
+        <div class="w-full result-card rounded-[2rem] p-10 text-center shadow-2xl border border-white/20">
+          <div class="text-7xl mb-4">🏆</div>
+          <h2 class="text-white text-3xl font-black mb-1">Kuis Selesai!</h2>
+          <p id="result-name" class="text-sky-100 mb-8"></p>
+          <div class="bg-black/20 rounded-3xl p-8 mb-8 border border-white/10">
+            <p class="text-sky-200 text-xs font-bold uppercase mb-2">Skor CSS Kamu</p>
+            <p id="result-score" class="text-7xl font-black text-white"></p>
+          </div>
+          <div id="save-status" class="text-sky-100 text-sm mb-6 flex items-center justify-center gap-2"><i data-lucide="loader" class="animate-spin w-4"></i> Menyimpan hasil...</div>
+          <button onclick="location.reload()" class="w-full py-4 rounded-2xl bg-white text-sky-900 font-black mb-3">Ulangi Kuis</button>
+
+          <a href="index.html" class="w-full py-4 rounded-2xl bg-sky-900/40 border border-white/10 text-white font-bold flex items-center justify-center gap-2 hover:bg-sky-900/60 transition-all">
+            <i data-lucide="home" class="w-5"></i> Kembali ke Menu Utama
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script src="kuis-css.js"></script>
+  </body>
+</html>
