@@ -203,7 +203,7 @@ body {
 
 .hero-image img {
   width: 100%;
-  max-width: 500px;
+  max-width: 800px;
   animation: floating 3s ease-in-out infinite;
 }
 
